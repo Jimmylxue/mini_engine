@@ -5,18 +5,33 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Document</title>
+		<style>
+			#myCanvas {
+				background-color: #1abc9c;
+				width: 500px;
+				height: 500px;
+			}
+		</style>
 	</head>
 	<body>
 		<script src="mini_engine.js"></script>
 		<script src="mini_engine.min.js"></script>
 		<canvas id="myCanvas"></canvas>
+
 		<script>
-			const { Shape } = mini_engine
-			console.log('mini_engine', Shape())
+			const { Display, Rect, Circle } = mini_engine
+			const canvas = document.getElementById('myCanvas')
+			const ctx = canvas.getContext('2d')
+
+			const display = new Display(canvas, ctx)
+			const rect = new Rect({
+				leftTop: { x: 0, y: 0 },
+				width: 100,
+				height: 100,
+			})
+			display.add(rect)
+
+			// display.add(rect1)
 		</script>
-		<!-- <script type="module">
-			import mini_engine from './mini_engine.js'
-			console.log('sss', mini_engine)
-		</script> -->
 	</body>
 </html>

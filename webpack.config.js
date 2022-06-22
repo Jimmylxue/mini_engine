@@ -62,9 +62,9 @@ module.exports = {
 				test: /\.min\.js$/, // 只针对 .min.js进行压缩
 				terserOptions: {
 					compress: {
-						drop_console: true,
+						// drop_console: true,
 						drop_debugger: false,
-						pure_funcs: ['console.log'], // 移除console
+						// pure_funcs: ['console.log'], // 移除console
 					},
 				},
 			}),

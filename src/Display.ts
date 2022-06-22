@@ -1,6 +1,6 @@
 import { Shape } from './Shape'
 
-export class Canvas {
+export class Display {
 	constructor(private canvas, private ctx, private allShapes: any[] = []) {}
 
 	add(shape: any) {
