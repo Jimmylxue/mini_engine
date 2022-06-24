@@ -1,5 +1,5 @@
 export class Shape {
-	constructor(private listenerMap = new Map()) {}
+	constructor(public listenerMap = new Map()) {}
 
 	on(eventName, listener) {
 		if (this.listenerMap.has(eventName)) {
