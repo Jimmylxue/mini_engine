@@ -3,9 +3,9 @@ export class Shape {
 
 	on(eventName, listener) {
 		if (this.listenerMap.has(eventName)) {
-			this.listenerMap.get(eventName).push(listener)
+			this.listenerMap.get(eventName).push(listener.bind(this))
 		} else {
-			this.listenerMap.set(eventName, [listener])
+			this.listenerMap.set(eventName, [listener.bind(this)])
 		}
 	}
 }

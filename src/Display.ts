@@ -4,6 +4,8 @@ import { Point2d } from './Point'
 
 export const move = 'mousemove'
 export const click = 'mousedown'
+export const clickUp = 'mouseup'
+export const touchMove = 'touchmove'
 
 export class Display {
 	constructor(
@@ -16,6 +18,8 @@ export class Display {
 
 	bindEvent() {
 		this.canvas.addEventListener(click, this.handleEvent(click))
+		this.canvas.addEventListener(clickUp, this.handleEvent(clickUp))
+		this.canvas.addEventListener(touchMove, this.handleEvent(touchMove))
 		// this.canvas.addEventListener(move, this.handleEvent(move))
 	}
 
@@ -36,6 +40,7 @@ export class Display {
 	}
 
 	getNewEvent(event) {
+		console.log('event~', event)
 		const point = new Point2d(event.offsetX, event.offsetY)
 		return {
 			point,
@@ -47,5 +52,16 @@ export class Display {
 	add(shape: any) {
 		shape.draw(this.ctx)
 		this.allShapes.push(shape)
+	}
+
+	// 清除画布
+	clearCanvas() {
+		this.ctx.clearRect(0, 0, 500, 500)
+	}
+
+	// 重新回话
+	redraw() {
+		this.clearCanvas()
+		this.allShapes.forEach(shape => shape.draw(this.ctx))
 	}
 }

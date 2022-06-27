@@ -44,6 +44,28 @@
 				console.log('rect点击了~~~~~~~~~', event)
 			})
 
+			rect.on('mouseup', event => {
+				event.isStopBubble = true
+				console.log('rect结束~~~~~~~~~', event, this)
+				rect.change(
+					{
+						leftTop: {
+							x: 100,
+							y: 100,
+						},
+						width: 200,
+						height: 200,
+						fillColor: '#e67e22',
+					},
+					display
+				)
+			})
+
+			rect.on('touchmove', event => {
+				event.isStopBubble = true
+				console.log('rectmove~~~~~~~~~', event)
+			})
+
 			rect1.on('mousedown', event => {
 				// event.isStopBubble = true
 				console.log('rect1点击了', event)
