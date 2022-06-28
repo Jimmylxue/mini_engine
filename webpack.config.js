@@ -45,6 +45,12 @@ module.exports = {
 					loader: 'babel-loader',
 				},
 			},
+			{
+				//加载后缀名.png|svg|jpg|gif 等图片格式文件
+				test: /\.(png|svg|jpg|gif)$/,
+				//使用图片加载器  加载图片
+				use: ['file-loader'],
+			},
 		],
 	},
 	/**

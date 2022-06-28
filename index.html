@@ -19,7 +19,7 @@
 		<canvas id="myCanvas" width="500" height="500"></canvas>
 
 		<script>
-			const { Display, Rect, Circle } = mini_engine
+			const { Display, Rect, Circle, CImage } = mini_engine
 			const canvas = document.getElementById('myCanvas')
 			const ctx = canvas.getContext('2d')
 
@@ -31,6 +31,9 @@
 			})
 			display.add(rect)
 
+			const img = new Image()
+			img.src = './src/a.png'
+			console.log('img~~', img)
 			const rect1 = new Rect({
 				leftTop: { x: 30, y: 30 },
 				width: 100,
@@ -38,6 +41,19 @@
 				fillColor: 'red',
 			})
 			display.add(rect1)
+
+			const cImg = new CImage({
+				leftTop: {
+					x: 60,
+					y: 60,
+				},
+				width: 50,
+				height: 50,
+				source:
+					'https://camo.githubusercontent.com/a1b76a151151e76cb92576d88cec16d910faa7e9e37dee007732567143642335/68747470733a2f2f7669746570726573732d736f757263652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f7479706f726162672e6a7067',
+			})
+
+			display.add(cImg)
 
 			rect.on('mousedown', event => {
 				event.isStopBubble = true
