@@ -7,6 +7,11 @@ export type BaseShape = {
 	fillColor: string
 }
 
+export type SizeBase = {
+	width: number
+	height: number
+}
+
 export type CircleProps = {
 	center: Point
 	radius: number
@@ -14,6 +19,10 @@ export type CircleProps = {
 
 export type RectProps = {
 	leftTop: Point
-	width: number
-	height: number
-} & BaseShape
+} & BaseShape &
+	SizeBase
+
+export type ImageProps = {
+	source: string
+	leftTop: Point
+} & SizeBase
