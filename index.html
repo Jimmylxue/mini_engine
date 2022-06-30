@@ -4,10 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
+		<title>mini_engine</title>
 		<style>
 			#myCanvas {
-				background-color: #1abc9c;
+				background-color: #95a5a6;
 				/* width: 500px;
 				height: 500px; */
 			}
@@ -19,7 +19,7 @@
 		<canvas id="myCanvas" width="500" height="500"></canvas>
 
 		<script>
-			const { Display, Rect, Circle, CImage } = mini_engine
+			const { Display, Rect, Circle, Image: CImage, Text } = mini_engine
 			const canvas = document.getElementById('myCanvas')
 			const ctx = canvas.getContext('2d')
 
@@ -30,17 +30,6 @@
 				height: 100,
 			})
 			display.add(rect)
-
-			const img = new Image()
-			img.src = './src/a.png'
-			console.log('img~~', img)
-			const rect1 = new Rect({
-				leftTop: { x: 30, y: 30 },
-				width: 100,
-				height: 100,
-				fillColor: 'red',
-			})
-			display.add(rect1)
 
 			const cImg = new CImage({
 				leftTop: {
@@ -83,13 +72,12 @@
 				console.log('rectmove~~~~~~~~~', event)
 			})
 
-			rect1.on('mousedown', event => {
-				// event.isStopBubble = true
-				console.log('rect1点击了', event)
-			})
+			// rect1.on('mousedown', event => {
+			// 	// event.isStopBubble = true
+			// 	console.log('rect1点击了', event)
+			// })
 
 			cImg.on('mousemove', event => {
-				console.log(event)
 				cImg.change(
 					{
 						leftTop: event.point,
@@ -100,6 +88,27 @@
 					display
 				)
 			})
+
+			const text = new Text({
+				x: 250,
+				y: 450,
+				text: '1',
+				type: 'fill',
+				size: 40,
+			})
+			display.add(text)
+
+			let count = 0
+			setInterval(() => {
+				text.change(
+					{
+						text: Number(text.props.text) + Number(count),
+					},
+					display
+				)
+				console.log(text)
+				count++
+			}, 1000)
 		</script>
 	</body>
 </html>

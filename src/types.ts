@@ -26,3 +26,10 @@ export type ImageProps = {
 	source: string
 	leftTop: Point
 } & SizeBase
+
+export type TextProps = {
+	text: string
+	type: 'fill' | 'stroke'
+	color?: string
+	size: number | string
+} & Point

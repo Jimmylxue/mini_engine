@@ -1,6 +1,5 @@
 import { RectProps } from './types'
 import { Shape } from './Shape'
-import { text } from 'node:stream/consumers'
 import { Display } from './Display'
 export class Rect extends Shape {
 	constructor(private props: RectProps) {
@@ -11,7 +10,6 @@ export class Rect extends Shape {
 		ctx.save()
 		ctx.beginPath()
 		ctx.fillStyle = fillColor
-		console.log('width', width, 'height', height)
 		ctx.fillRect(leftTop.x, leftTop.y, width, height)
 		ctx.closePath()
 		ctx.restore()

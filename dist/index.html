@@ -29,16 +29,13 @@
 			})
 			display.add(rect)
 
-			const img = new Image()
-			img.src = './src/a.png'
-			console.log('img~~', img)
-			const rect1 = new Rect({
-				leftTop: { x: 30, y: 30 },
-				width: 100,
-				height: 100,
-				fillColor: 'red',
-			})
-			display.add(rect1)
+			// const rect1 = new Rect({
+			// 	leftTop: { x: 30, y: 30 },
+			// 	width: 100,
+			// 	height: 100,
+			// 	fillColor: 'red',
+			// })
+			// display.add(rect1)
 
 			const cImg = new CImage({
 				leftTop: {
@@ -81,10 +78,10 @@
 				console.log('rectmove~~~~~~~~~', event)
 			})
 
-			rect1.on('mousedown', event => {
-				// event.isStopBubble = true
-				console.log('rect1点击了', event)
-			})
+			// rect1.on('mousedown', event => {
+			// 	// event.isStopBubble = true
+			// 	console.log('rect1点击了', event)
+			// })
 		</script>
 		<script src="mini_engine.js"></script>
 		<script src="mini_engine.min.js"></script>

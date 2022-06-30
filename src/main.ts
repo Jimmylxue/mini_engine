@@ -2,7 +2,8 @@
 import { Display } from './Display'
 import { Rect } from './Rect'
 import { Circle } from './Circle'
-import { CImage } from './Image'
+import { Image } from './Image'
+import { Text } from './Text'
 
 export default {
 	Shape() {
@@ -12,5 +13,6 @@ export default {
 	Display,
 	Rect,
 	Circle,
-	CImage,
+	Image,
+	Text,
 }

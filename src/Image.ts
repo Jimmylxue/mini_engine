@@ -1,9 +1,6 @@
 import { Shape } from './Shape'
 import { ImageProps } from './types'
 import { Display } from './Display'
-// import a from './a.png'
-import a from './a.jpg'
-console.log('aaaa', a)
 
 enum ImgStatus {
 	PENDING,
@@ -11,7 +8,7 @@ enum ImgStatus {
 	REJECT,
 }
 
-export class CImage extends Shape {
+export class Image extends Shape {
 	private img: HTMLImageElement
 	private loadStatus: ImgStatus = ImgStatus.PENDING
 	constructor(private props: ImageProps) {
@@ -26,7 +23,6 @@ export class CImage extends Shape {
 		}
 	}
 	draw(ctx: CanvasRenderingContext2D) {
-		console.log('cc')
 		const {
 			leftTop: { x, y },
 			width,
