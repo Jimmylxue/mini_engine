@@ -20,7 +20,7 @@ export class Display {
 		this.canvas.addEventListener(click, this.handleEvent(click))
 		this.canvas.addEventListener(clickUp, this.handleEvent(clickUp))
 		this.canvas.addEventListener(touchMove, this.handleEvent(touchMove))
-		// this.canvas.addEventListener(move, this.handleEvent(move))
+		this.canvas.addEventListener(move, this.handleEvent(move))
 	}
 
 	handleEvent(name) {
@@ -40,7 +40,7 @@ export class Display {
 	}
 
 	getNewEvent(event) {
-		console.log('event~', event)
+		// console.log('event~', event)
 		const point = new Point2d(event.offsetX, event.offsetY)
 		return {
 			point,

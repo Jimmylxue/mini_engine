@@ -2916,10 +2916,8 @@ var CImage = /*#__PURE__*/function (_Shape) {
           width = _this$props.width,
           height = _this$props.height,
           source = _this$props.source;
-      var img = document.createElement('img'); // console.log('aimg', a)
-
-      img.src = source; // img.src = './a.png'
-      // console.log(img)
+      var img = document.createElement('img');
+      img.src = source;
 
       img.onload = function () {
         ctx.drawImage(img, x, y, width, height);
