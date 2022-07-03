@@ -30,11 +30,18 @@
 				height: 100,
 			})
 			display.add(rect)
+			const rect1 = new Rect({
+				leftTop: { x: 10, y: 10 },
+				width: 100,
+				height: 100,
+				fillColor: 'red',
+			})
+			display.add(rect1)
 
 			const cImg = new CImage({
 				leftTop: {
-					x: 60,
-					y: 60,
+					x: 200,
+					y: 200,
 				},
 				width: 50,
 				height: 50,
@@ -76,11 +83,27 @@
 			// 	// event.isStopBubble = true
 			// 	console.log('rect1点击了', event)
 			// })
+			let isDown = false
+			cImg.on('mousedown', () => {
+				isDown = true
+			})
+
+			cImg.on('mouseup', () => {
+				isDown = false
+			})
 
 			cImg.on('mousemove', event => {
+				if (!isDown) {
+					return
+				}
+				let startPoint = {
+					x: event.point.x - 100,
+					y: event.point.y - 100,
+				}
 				cImg.change(
 					{
-						leftTop: event.point,
+						// leftTop: event.point,
+						leftTop: startPoint,
 						width: 200,
 						height: 200,
 						fillColor: '#e67e22',
@@ -99,16 +122,19 @@
 			display.add(text)
 
 			let count = 0
-			setInterval(() => {
+			let timer = setInterval(() => {
 				text.change(
 					{
 						text: Number(text.props.text) + Number(count),
 					},
 					display
 				)
-				console.log(text)
 				count++
-			}, 1000)
+			}, 3000)
+
+			setTimeout(() => {
+				display.remove(rect)
+			}, 2000)
 		</script>
 	</body>
 </html>

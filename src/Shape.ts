@@ -1,7 +1,7 @@
 export class Shape {
 	constructor(public listenerMap = new Map()) {}
 
-	on(eventName, listener) {
+	on(eventName: string, listener: () => void) {
 		if (this.listenerMap.has(eventName)) {
 			this.listenerMap.get(eventName).push(listener.bind(this))
 		} else {

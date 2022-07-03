@@ -41,8 +41,8 @@ export class Image extends Shape {
 		}
 	}
 
-	isPointInClosedRegion(mouse) {
-		const { x, y } = mouse.point || mouse
+	isPointInClosedRegion(mouse: any) {
+		const { x, y } = mouse?.point || mouse
 		const { leftTop, width, height } = this.props
 		const { x: minX, y: minY } = leftTop
 		const maxX = minX + width

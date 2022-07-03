@@ -1,30 +1,24 @@
 import { Rect } from './Rect'
-import { Shape } from './Shape'
 import { Point2d } from './Point'
-
-export const move = 'mousemove'
-export const click = 'mousedown'
-export const clickUp = 'mouseup'
-export const touchMove = 'touchmove'
+import { EVENT_ARR } from './types'
 
 export class Display {
 	constructor(
 		private canvas: HTMLElement,
-		private ctx,
-		private allShapes: any[] = []
+		private ctx: CanvasRenderingContext2D,
+		private allShapes = new Set<Rect>()
 	) {
 		this.bindEvent()
 	}
 
 	bindEvent() {
-		this.canvas.addEventListener(click, this.handleEvent(click))
-		this.canvas.addEventListener(clickUp, this.handleEvent(clickUp))
-		this.canvas.addEventListener(touchMove, this.handleEvent(touchMove))
-		this.canvas.addEventListener(move, this.handleEvent(move))
+		EVENT_ARR.forEach(eventName => {
+			this.canvas.addEventListener(eventName, this.handleEvent(eventName))
+		})
 	}
 
-	handleEvent(name) {
-		return event => {
+	handleEvent(name: string) {
+		return (event: any) => {
 			event = this.getNewEvent(event)
 			this.allShapes.forEach((shape: Rect) => {
 				const listeners = shape.listenerMap.get(name)
@@ -33,14 +27,13 @@ export class Display {
 					shape.isPointInClosedRegion(event) &&
 					!event.isStopBubble
 				) {
-					listeners.forEach(listener => listener(event))
+					listeners.forEach((listener: (e: any) => void) => listener(event))
 				}
 			})
 		}
 	}
 
-	getNewEvent(event) {
-		// console.log('event~', event)
+	getNewEvent(event: any) {
 		const point = new Point2d(event.offsetX, event.offsetY)
 		return {
 			point,
@@ -51,7 +44,14 @@ export class Display {
 
 	add(shape: any) {
 		shape.draw(this.ctx)
-		this.allShapes.push(shape)
+		this.allShapes.add(shape)
+	}
+
+	remove(shape: any) {
+		this.allShapes.delete(shape)
+		this.clearCanvas()
+		this.redraw()
+		// this.allShapes.splice()
 	}
 
 	// 清除画布

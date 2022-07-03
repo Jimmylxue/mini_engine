@@ -15,7 +15,7 @@ export class Rect extends Shape {
 		ctx.restore()
 	}
 	// 判断点击的点是否在图形内部
-	isPointInClosedRegion(mouse) {
+	isPointInClosedRegion(mouse: any) {
 		const { x, y } = mouse.point || mouse
 		const { leftTop, width, height } = this.props
 		const { x: minX, y: minY } = leftTop
