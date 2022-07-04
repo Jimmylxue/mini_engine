@@ -1,14 +1,36 @@
 import { Rect } from './Rect'
 import { Point2d } from './Point'
-import { EVENT_ARR } from './types'
+import { EVENT_ARR } from '../types/types'
 
 export class Display {
+	private animateTimer: number = 0
 	constructor(
 		private canvas: HTMLElement,
 		private ctx: CanvasRenderingContext2D,
 		private allShapes = new Set<Rect>()
 	) {
 		this.bindEvent()
+		this.star()
+	}
+
+	star() {
+		const animate = () => {
+			let hasMoving = false
+			this.allShapes.forEach(shape => {
+				shape?.initAnimate?.()
+				if (shape.isAnimating) {
+					hasMoving = true
+				}
+			})
+			if (hasMoving) {
+				// 性能优化 - 尽量的减少 绘画次数
+				this.redraw()
+			}
+			this.animateTimer = requestAnimationFrame(animate)
+			// cancelAnimationFrame(this.animateTimer)
+		}
+
+		animate()
 	}
 
 	bindEvent() {
@@ -51,7 +73,6 @@ export class Display {
 		this.allShapes.delete(shape)
 		this.clearCanvas()
 		this.redraw()
-		// this.allShapes.splice()
 	}
 
 	// 清除画布
@@ -59,9 +80,11 @@ export class Display {
 		this.ctx.clearRect(0, 0, 500, 500)
 	}
 
-	// 重新回话
+	// 重新绘画
 	redraw() {
 		this.clearCanvas()
-		this.allShapes.forEach(shape => shape.draw(this.ctx))
+		this.allShapes.forEach(shape => {
+			shape.draw(this.ctx)
+		})
 	}
 }

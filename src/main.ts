@@ -1,15 +1,6 @@
-// console.log('hello world')
-import { Display } from './Display'
-import { Rect } from './Rect'
-import { Circle } from './Circle'
-import { Image } from './Image'
-import { Text } from './Text'
+import { Display, Rect, Circle, Image, Text } from './core'
 
 export default {
-	Shape() {
-		console.log('shape')
-		return 11
-	},
 	Display,
 	Rect,
 	Circle,

@@ -1,4 +1,8 @@
 export class Shape {
+	public x: number = 0
+	public y: number = 0
+	public width: number = 0
+	public height: number = 0
 	constructor(public listenerMap = new Map()) {}
 
 	on(eventName: string, listener: () => void) {

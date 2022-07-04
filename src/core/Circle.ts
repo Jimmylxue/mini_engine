@@ -1,5 +1,5 @@
 import { Shape } from './Shape'
-import { CircleProps } from './types'
+import { CircleProps } from '../types/types'
 
 export class Circle extends Shape {
 	constructor(private props: CircleProps) {

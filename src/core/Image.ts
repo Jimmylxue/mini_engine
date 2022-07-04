@@ -1,6 +1,7 @@
 import { Shape } from './Shape'
-import { ImageProps } from './types'
+import { ImageProps } from '../types/types'
 import { Display } from './Display'
+import BaseError, { ErrorType, error } from './error'
 
 enum ImgStatus {
 	PENDING,
@@ -35,7 +36,10 @@ export class Image extends Shape {
 				return
 			}, 300)
 		} else if (this.loadStatus === ImgStatus.REJECT) {
-			throw new Error('图片加载失败')
+			throw new BaseError(
+				ErrorType.SourceError,
+				'Image resource failed to load'
+			)
 		} else {
 			ctx.drawImage(this.img, x, y, width, height)
 		}
