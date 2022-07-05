@@ -2,9 +2,11 @@ import { RectProps } from '../types/types'
 import { Shape } from './Shape'
 import { Display } from './Display'
 import TWEEN, { Tween } from '@tweenjs/tween.js'
+import { Animate } from '../types/AnimateProps'
 export class Rect extends Shape {
 	private tween: any
 	public isAnimating: boolean = false
+	public fnArr?: () => void
 	constructor(private props: RectProps) {
 		super()
 		this.bindProps()
@@ -26,6 +28,14 @@ export class Rect extends Shape {
 			width: this.props.width,
 			height: this.props.height,
 		})
+	}
+
+	track(fn: () => void) {
+		this.fnArr = fn
+	}
+
+	trigger() {
+		this.fnArr?.()
 	}
 
 	draw(ctx: CanvasRenderingContext2D) {
@@ -53,23 +63,19 @@ export class Rect extends Shape {
 
 	change(
 		changeProps: Partial<RectProps>,
-		duration: number,
-		repeat: number = 1,
-		onComplete?: () => void
+		{ duration = 1000, repeat = 0, delay = 0, repeatDelay, onComplete }: Animate // duration: number,
 	) {
 		const { leftTop, width, height, fillColor } = changeProps
 		const beforeProps = this.props
 		const changeProp = {
-			// leftTop: leftTop || beforeProps.leftTop,
 			x: leftTop?.x || beforeProps.leftTop.x,
 			y: leftTop?.y || beforeProps.leftTop.y,
 			width: width || beforeProps.width,
 			height: height || beforeProps.height,
 			fillColor: fillColor || beforeProps.fillColor,
 		}
-		console.log('change!!')
 		this.tween
-			.to(changeProp, 3000)
+			.to(changeProp, duration)
 			.easing(TWEEN.Easing.Linear.None)
 			.onUpdate(
 				(position: { x: number; y: number; width: number; height: number }) => {
@@ -90,8 +96,9 @@ export class Rect extends Shape {
 				onComplete?.()
 			})
 			.start()
-			.repeat(repeat)
-		console.log('333')
+			.delay(delay)
+			.repeatDelay(repeatDelay || 1000)
+			.repeat(3)
 		// display.redraw()
 	}
 }

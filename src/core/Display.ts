@@ -18,6 +18,7 @@ export class Display {
 			let hasMoving = false
 			this.allShapes.forEach(shape => {
 				shape?.initAnimate?.()
+				shape?.trigger?.()
 				if (shape.isAnimating) {
 					hasMoving = true
 				}

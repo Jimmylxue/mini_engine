@@ -46,8 +46,8 @@
 				width: 50,
 				height: 50,
 				source:
-					// 'https://camo.githubusercontent.com/a1b76a151151e76cb92576d88cec16d910faa7e9e37dee007732567143642335/68747470733a2f2f7669746570726573732d736f757263652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f7479706f726162672e6a7067',
-					'a.png',
+					'https://camo.githubusercontent.com/a1b76a151151e76cb92576d88cec16d910faa7e9e37dee007732567143642335/68747470733a2f2f7669746570726573732d736f757263652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f7479706f726162672e6a7067',
+				// 'a.png',
 			})
 
 			display.add(cImg)
@@ -133,17 +133,28 @@
 			// }, 3000)
 			setTimeout(() => {
 				console.log('变化')
-				rect1.change({
-					leftTop: {
-						x: 300,
-						y: 300,
+				rect1.change(
+					{
+						leftTop: {
+							x: 300,
+							y: 300,
+						},
 					},
-				})
+					100,
+					0,
+					() => {
+						console.log('动画完成了')
+					}
+				)
 			}, 1000)
 
 			rect1.on('mousedown', () => {
 				console.log('红色块块点击了')
 			})
+
+			// rect1.track(() => {
+			// 	console.log('timer 心跳事件')
+			// })
 
 			console.log(rect1, 'sss')
 
