@@ -152,9 +152,19 @@
 				console.log('红色块块点击了')
 			})
 
-			// rect1.track(() => {
-			// 	console.log('timer 心跳事件')
-			// })
+			console.log(cImg, 'cimg')
+			let width = 50
+			cImg.track(() => {
+				cImg.change(
+					{
+						leftTop: cImg.props.leftTop,
+						width: width++,
+						height: width++,
+					},
+					display
+				)
+				// console.log('img 心跳事件')
+			})
 
 			console.log(rect1, 'sss')
 

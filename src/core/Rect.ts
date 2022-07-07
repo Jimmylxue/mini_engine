@@ -4,17 +4,17 @@ import { Display } from './Display'
 import TWEEN, { Tween } from '@tweenjs/tween.js'
 import { Animate } from '../types/AnimateProps'
 export class Rect extends Shape {
-	private tween: any
+	// private tween: any
 	public isAnimating: boolean = false
-	public fnArr?: () => void
+
 	constructor(private props: RectProps) {
 		super()
 		this.bindProps()
 	}
 
-	initAnimate() {
-		TWEEN.update()
-	}
+	// initAnimate() {
+	// 	TWEEN.update()
+	// }
 
 	bindProps() {
 		this.x = this.props.leftTop.x
@@ -28,14 +28,6 @@ export class Rect extends Shape {
 			width: this.props.width,
 			height: this.props.height,
 		})
-	}
-
-	track(fn: () => void) {
-		this.fnArr = fn
-	}
-
-	trigger() {
-		this.fnArr?.()
 	}
 
 	draw(ctx: CanvasRenderingContext2D) {
