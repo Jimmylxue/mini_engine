@@ -40,3 +40,9 @@ export const MOUSE_UP = 'mouseup'
 export const TOUCH_MOVE = 'touchmove'
 
 export const EVENT_ARR = [MOUSE_MOVE, MOUSE_DOWN, MOUSE_UP, TOUCH_MOVE]
+
+export enum TShape {
+	RECT,
+	Image,
+	Circle,
+}

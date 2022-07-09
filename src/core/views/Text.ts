@@ -1,6 +1,6 @@
 import { Display } from './Display'
 import { Shape } from './Shape'
-import { TextProps } from '../types/types'
+import { TextProps } from 'types/types'
 
 export class Text extends Shape {
 	public text: string

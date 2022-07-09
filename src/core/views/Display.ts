@@ -1,6 +1,6 @@
 import { Rect } from './Rect'
 import { Point2d } from './Point'
-import { EVENT_ARR } from '../types/types'
+import { EVENT_ARR } from 'types/types'
 
 export class Display {
 	private animateTimer: number = 0

@@ -1,7 +1,9 @@
 import { Shape } from './Shape'
-import { ImageProps } from '../types/types'
+import { ImageProps, TShape } from 'types/types'
 import { Display } from './Display'
-import BaseError, { ErrorType, error } from './error'
+import BaseError, { ErrorType, error } from '../error'
+import TWEEN, { Tween } from '@tweenjs/tween.js'
+import { checkInRegin } from '@utils/pointCheck'
 
 enum ImgStatus {
 	PENDING,
@@ -22,7 +24,34 @@ export class Image extends Shape {
 		this.img.onerror = () => {
 			this.loadStatus = ImgStatus.REJECT
 		}
+		this.bindProps()
 	}
+
+	get x() {
+		return this.props.leftTop.x
+	}
+
+	get y() {
+		return this.props.leftTop.y
+	}
+
+	get width() {
+		return this.props.width
+	}
+
+	get height() {
+		return this.props.height
+	}
+
+	bindProps() {
+		this.tween = new Tween({
+			x: this.props.leftTop.x,
+			y: this.props.leftTop.y,
+			width: this.props.width,
+			height: this.props.height,
+		})
+	}
+
 	draw(ctx: CanvasRenderingContext2D) {
 		const {
 			leftTop: { x, y },
@@ -45,16 +74,8 @@ export class Image extends Shape {
 		}
 	}
 
-	isPointInClosedRegion(mouse: any) {
-		const { x, y } = mouse?.point || mouse
-		const { leftTop, width, height } = this.props
-		const { x: minX, y: minY } = leftTop
-		const maxX = minX + width
-		const maxY = minY + height
-		if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-			return true
-		}
-		return false
+	isPointInClosedRegion(mouse: any): boolean {
+		return checkInRegin(TShape.Image, mouse, this)
 	}
 
 	change(changeProps: Partial<ImageProps>, display: Display) {

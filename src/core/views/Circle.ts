@@ -1,5 +1,6 @@
 import { Shape } from './Shape'
-import { CircleProps } from '../types/types'
+import { CircleProps, TShape } from 'types/types'
+import { checkInRegin } from '@utils/pointCheck'
 
 export class Circle extends Shape {
 	constructor(private props: CircleProps) {
@@ -20,7 +21,14 @@ export class Circle extends Shape {
 
 	// 判断鼠标的点是否在图形内部
 	isPointInClosedRegion(mouse: any) {
-		const { center, radius } = this.props
-		return mouse.point.distance(center) <= radius * radius
+		return checkInRegin(TShape.Circle, mouse, this)
+	}
+
+	get center() {
+		return this.props.center
+	}
+
+	get radius() {
+		return this.props.radius
 	}
 }

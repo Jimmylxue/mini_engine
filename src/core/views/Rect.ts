@@ -1,27 +1,35 @@
-import { RectProps } from '../types/types'
+import { RectProps, TShape } from 'types/types'
 import { Shape } from './Shape'
 import { Display } from './Display'
 import TWEEN, { Tween } from '@tweenjs/tween.js'
-import { Animate } from '../types/AnimateProps'
+import { Animate } from 'types/AnimateProps'
+import { checkInRegin } from '@utils/pointCheck'
 export class Rect extends Shape {
 	// private tween: any
 	public isAnimating: boolean = false
 
-	constructor(private props: RectProps) {
+	constructor(public props: RectProps) {
 		super()
 		this.bindProps()
 	}
 
-	// initAnimate() {
-	// 	TWEEN.update()
-	// }
+	get x(): number {
+		return this.props.leftTop.x
+	}
+
+	get y(): number {
+		return this.props.leftTop.y
+	}
+
+	get width(): number {
+		return this.props.width
+	}
+
+	get height(): number {
+		return this.props.height
+	}
 
 	bindProps() {
-		this.x = this.props.leftTop.x
-		this.y = this.props.leftTop.y
-		this.width = this.props.width
-		this.height = this.props.height
-
 		this.tween = new Tween({
 			x: this.props.leftTop.x,
 			y: this.props.leftTop.y,
@@ -42,20 +50,12 @@ export class Rect extends Shape {
 	}
 	// 判断点击的点是否在图形内部
 	isPointInClosedRegion(mouse: any) {
-		const { x, y } = mouse.point || mouse
-		const { leftTop, width, height } = this.props
-		const { x: minX, y: minY } = leftTop
-		const maxX = minX + width
-		const maxY = minY + height
-		if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-			return true
-		}
-		return false
+		return checkInRegin(TShape.RECT, mouse, this)
 	}
 
 	change(
 		changeProps: Partial<RectProps>,
-		{ duration = 1000, repeat = 0, delay = 0, repeatDelay, onComplete }: Animate // duration: number,
+		{ duration = 2000, repeat = 0, delay = 0, repeatDelay, onComplete }: Animate // duration: number,
 	) {
 		const { leftTop, width, height, fillColor } = changeProps
 		const beforeProps = this.props

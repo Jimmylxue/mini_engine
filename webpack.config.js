@@ -36,6 +36,12 @@ module.exports = {
 	},
 	resolve: {
 		extensions: ['.js', '.json', '.ts'],
+		alias: {
+			'@src': path.resolve(__dirname, 'src/'),
+			types: path.resolve(__dirname, 'src/core/types/'),
+			'@utils': path.resolve(__dirname, 'src/core/utils/'),
+			'@views': path.resolve(__dirname, 'src/core/views/'),
+		},
 	},
 	module: {
 		rules: [
