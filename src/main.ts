@@ -1,4 +1,4 @@
-import { Display, Rect, Circle, Image, Text } from './core'
+import { Display, Rect, Circle, Image, Text, RES } from './core'
 
 export default {
 	Display,
@@ -6,4 +6,5 @@ export default {
 	Circle,
 	Image,
 	Text,
+	RES,
 }

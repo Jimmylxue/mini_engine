@@ -55,7 +55,16 @@ export class Rect extends Shape {
 
 	change(
 		changeProps: Partial<RectProps>,
-		{ duration = 2000, repeat = 0, delay = 0, repeatDelay, onComplete }: Animate // duration: number,
+		{
+			duration = 2000,
+			repeat = 0,
+			delay = 0,
+			repeatDelay,
+			onComplete,
+			onUpdate,
+			onStop,
+			onRepeat,
+		}: Animate // duration: number,
 	) {
 		const { leftTop, width, height, fillColor } = changeProps
 		const beforeProps = this.props
@@ -81,16 +90,23 @@ export class Rect extends Shape {
 						fillColor: this.props.fillColor,
 					}
 					this.isAnimating = true
+					onUpdate?.()
 				}
 			)
 			.onComplete(() => {
 				this.isAnimating = false
 				onComplete?.()
 			})
+			.onStop(() => {
+				onStop?.()
+			})
+			.onRepeat(() => {
+				onRepeat?.()
+			})
 			.start()
 			.delay(delay)
 			.repeatDelay(repeatDelay || 1000)
-			.repeat(3)
+			.repeat(repeat)
 		// display.redraw()
 	}
 }

@@ -6,7 +6,6 @@ function checkRect(mouse: any, shape: Rect | Image): boolean {
 	const { x: minX, y: minY, width, height } = shape as Rect
 	const maxX = minX + width
 	const maxY = minY + height
-	console.log(minX, minY, maxX, maxY, x, y)
 	if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
 		return true
 	}
