@@ -4,8 +4,9 @@
 
 export enum ErrorType {
 	ConfigError = 1, // 配置信息错误
-	RenderError = 2, // 渲染错误
-	SourceError = 3, // 资源错误  -- 如图片资源打不开
+	RenderError, // 渲染错误
+	SourceError, // 资源错误  -- 如图片资源打不开
+	SOURCE_NOT_FOUND, //
 }
 
 export const warn = (msg: string): void => {

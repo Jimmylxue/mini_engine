@@ -12,18 +12,9 @@ enum ImgStatus {
 }
 
 export class Image extends Shape {
-	// private img: HTMLImageElement
 	private loadStatus: ImgStatus = ImgStatus.PENDING
 	constructor(private props: ImageProps) {
 		super()
-		// this.img = document.createElement('img')
-		// this.img.src = props.source
-		// this.img.onload = () => {
-		// 	this.loadStatus = ImgStatus.RESOLVE
-		// }
-		// this.img.onerror = () => {
-		// 	this.loadStatus = ImgStatus.REJECT
-		// }
 		this.bindProps()
 	}
 
