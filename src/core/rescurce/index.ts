@@ -1,17 +1,13 @@
 import BaseError, { ErrorType } from '../error'
 import { TSource, SourceItem } from './type'
+import { createImgBitmap, CreateSoundRes } from './utils'
 import to from 'await-to-js'
 
-enum ImgStatus {
-	PENDING,
-	RESOLVE,
-	REJECT,
-}
-
 let sourceSuccessFn: () => void
+let progressFn: (process: number, sum: number) => void
 let sourceCount: number = 0
 
-const source2map = new Map<string, ImageBitmap>()
+const source2map = new Map<string, ImageBitmap | HTMLAudioElement>()
 
 function getRes(key: string) {
 	if (source2map.has(key)) {
@@ -23,45 +19,48 @@ function getRes(key: string) {
 	)
 }
 
-async function bindRes(source: SourceItem) {
-	const [error, bitmap] = await to(createImage(source.url))
+async function analyzeImageRes(source: SourceItem) {
+	const [error, bitmap] = await to(createImgBitmap(source.url))
 	if (error) {
 		throw new BaseError(
 			ErrorType.SourceError,
 			`${source.key} resource failed to load`
 		)
 	}
+	bindRes(source, bitmap)
+}
+
+async function analyzeSoundRes(source: SourceItem) {
+	const [error, bitmap] = await to(CreateSoundRes(source.url))
+	if (error) {
+		throw new BaseError(
+			ErrorType.SourceError,
+			`${source.key} resource failed to load`
+		)
+	}
+	bindRes(source, bitmap)
+}
+
+function bindRes(source: SourceItem, bitmap: ImageBitmap | HTMLAudioElement) {
 	source2map.set(source.key, bitmap)
+	progressFn && progressFn(source2map.size, sourceCount)
 	if (source2map.size === sourceCount) {
 		sourceSuccessFn && sourceSuccessFn()
 	}
 }
 
-function createImage(url: string): Promise<ImageBitmap> {
-	return new Promise((resolve, reject) => {
-		const img = new Image()
-		img.src = url
-		img.onload = async function () {
-			const res: ImageBitmap = await createImageBitmap(
-				img,
-				0,
-				0,
-				img.width,
-				img.height
-			)
-			resolve(res)
-		}
-		img.onerror = function () {
-			reject(ImgStatus.REJECT)
-		}
-	})
-}
-
-function resolve(map: TSource, onSuccess: () => void) {
+function resolveAssets(map: TSource, onProgress: () => void) {
 	sourceCount = map.length
 	map.forEach(source => {
-		bindRes(source)
+		switch (source.type) {
+			case 'image':
+				analyzeImageRes(source)
+				break
+			case 'sound':
+				analyzeSoundRes(source)
+		}
 	})
+	progressFn = onProgress
 }
 
 function onLoad(fn: () => void) {
@@ -70,6 +69,6 @@ function onLoad(fn: () => void) {
 
 export const RES = {
 	getRes,
-	resolve,
+	resolve: resolveAssets,
 	onLoad,
 }
