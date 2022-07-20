@@ -13,21 +13,26 @@ return /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ([
 /* 0 */,
 /* 1 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Text = exports.Rect = exports.Image = exports.Circle = exports.Display = void 0;
-var Display_1 = __webpack_require__(2);
-Object.defineProperty(exports, "Display", ({ enumerable: true, get: function () { return Display_1.Display; } }));
-var Circle_1 = __webpack_require__(5);
-Object.defineProperty(exports, "Circle", ({ enumerable: true, get: function () { return Circle_1.Circle; } }));
-var Image_1 = __webpack_require__(7);
-Object.defineProperty(exports, "Image", ({ enumerable: true, get: function () { return Image_1.Image; } }));
-var Rect_1 = __webpack_require__(9);
-Object.defineProperty(exports, "Rect", ({ enumerable: true, get: function () { return Rect_1.Rect; } }));
-var Text_1 = __webpack_require__(11);
-Object.defineProperty(exports, "Text", ({ enumerable: true, get: function () { return Text_1.Text; } }));
+__exportStar(__webpack_require__(2), exports);
+__exportStar(__webpack_require__(14), exports);
 
 
 /***/ }),
@@ -36,9 +41,28 @@ Object.defineProperty(exports, "Text", ({ enumerable: true, get: function () { r
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Text = exports.Rect = exports.Image = exports.Circle = exports.Display = void 0;
+var Display_1 = __webpack_require__(3);
+Object.defineProperty(exports, "Display", ({ enumerable: true, get: function () { return Display_1.Display; } }));
+var Circle_1 = __webpack_require__(6);
+Object.defineProperty(exports, "Circle", ({ enumerable: true, get: function () { return Circle_1.Circle; } }));
+var Image_1 = __webpack_require__(10);
+Object.defineProperty(exports, "Image", ({ enumerable: true, get: function () { return Image_1.Image; } }));
+var Rect_1 = __webpack_require__(12);
+Object.defineProperty(exports, "Rect", ({ enumerable: true, get: function () { return Rect_1.Rect; } }));
+var Text_1 = __webpack_require__(13);
+Object.defineProperty(exports, "Text", ({ enumerable: true, get: function () { return Text_1.Text; } }));
+
+
+/***/ }),
+/* 3 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Display = void 0;
-const Point_1 = __webpack_require__(3);
-const types_1 = __webpack_require__(4);
+const Point_1 = __webpack_require__(4);
+const types_1 = __webpack_require__(5);
 class Display {
     constructor(canvas, ctx, allShapes = new Set()) {
         this.canvas = canvas;
@@ -52,8 +76,9 @@ class Display {
         const animate = () => {
             let hasMoving = false;
             this.allShapes.forEach(shape => {
-                var _a;
+                var _a, _b;
                 (_a = shape === null || shape === void 0 ? void 0 : shape.initAnimate) === null || _a === void 0 ? void 0 : _a.call(shape);
+                (_b = shape === null || shape === void 0 ? void 0 : shape.trigger) === null || _b === void 0 ? void 0 : _b.call(shape);
                 if (shape.isAnimating) {
                     hasMoving = true;
                 }
@@ -62,6 +87,7 @@ class Display {
                 // 性能优化 - 尽量的减少 绘画次数
                 this.redraw();
             }
+            this.trigger();
             this.animateTimer = requestAnimationFrame(animate);
             // cancelAnimationFrame(this.animateTimer)
         };
@@ -100,21 +126,29 @@ class Display {
     }
     // 清除画布
     clearCanvas() {
-        this.ctx.clearRect(0, 0, 500, 500);
+        this.ctx.clearRect(0, 0, 375, 667);
     }
     // 重新绘画
     redraw() {
+        console.log('redwar');
         this.clearCanvas();
         this.allShapes.forEach(shape => {
             shape.draw(this.ctx);
         });
+    }
+    track(fn) {
+        this.fnArr = fn;
+    }
+    trigger() {
+        var _a;
+        (_a = this.fnArr) === null || _a === void 0 ? void 0 : _a.call(this);
     }
 }
 exports.Display = Display;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -143,27 +177,35 @@ exports.Point2d = Point2d;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.EVENT_ARR = exports.TOUCH_MOVE = exports.MOUSE_UP = exports.MOUSE_DOWN = exports.MOUSE_MOVE = void 0;
+exports.TShape = exports.EVENT_ARR = exports.TOUCH_MOVE = exports.MOUSE_UP = exports.MOUSE_DOWN = exports.MOUSE_MOVE = void 0;
 exports.MOUSE_MOVE = 'mousemove';
 exports.MOUSE_DOWN = 'mousedown';
 exports.MOUSE_UP = 'mouseup';
 exports.TOUCH_MOVE = 'touchmove';
 exports.EVENT_ARR = [exports.MOUSE_MOVE, exports.MOUSE_DOWN, exports.MOUSE_UP, exports.TOUCH_MOVE];
+var TShape;
+(function (TShape) {
+    TShape[TShape["RECT"] = 0] = "RECT";
+    TShape[TShape["Image"] = 1] = "Image";
+    TShape[TShape["Circle"] = 2] = "Circle";
+})(TShape = exports.TShape || (exports.TShape = {}));
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Circle = void 0;
-const Shape_1 = __webpack_require__(6);
+const Shape_1 = __webpack_require__(7);
+const types_1 = __webpack_require__(5);
+const pointCheck_1 = __webpack_require__(9);
 class Circle extends Shape_1.Shape {
     constructor(props) {
         super();
@@ -182,27 +224,33 @@ class Circle extends Shape_1.Shape {
     }
     // 判断鼠标的点是否在图形内部
     isPointInClosedRegion(mouse) {
-        const { center, radius } = this.props;
-        return mouse.point.distance(center) <= radius * radius;
+        return (0, pointCheck_1.checkInRegin)(types_1.TShape.Circle, mouse, this);
+    }
+    get center() {
+        return this.props.center;
+    }
+    get radius() {
+        return this.props.radius;
     }
 }
 exports.Circle = Circle;
 
 
 /***/ }),
-/* 6 */
-/***/ ((__unused_webpack_module, exports) => {
+/* 7 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Shape = void 0;
+const tween_js_1 = __importDefault(__webpack_require__(8));
+// 所有图形的基类
 class Shape {
     constructor(listenerMap = new Map()) {
         this.listenerMap = listenerMap;
-        this.x = 0;
-        this.y = 0;
-        this.width = 0;
-        this.height = 0;
     }
     on(eventName, listener) {
         if (this.listenerMap.has(eventName)) {
@@ -212,268 +260,22 @@ class Shape {
             this.listenerMap.set(eventName, [listener.bind(this)]);
         }
     }
+    initAnimate() {
+        tween_js_1.default.update();
+    }
+    track(fn) {
+        this.fnArr = fn;
+    }
+    trigger() {
+        var _a;
+        (_a = this.fnArr) === null || _a === void 0 ? void 0 : _a.call(this);
+    }
 }
 exports.Shape = Shape;
 
 
 /***/ }),
-/* 7 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Image = void 0;
-const Shape_1 = __webpack_require__(6);
-const error_1 = __importStar(__webpack_require__(8));
-var ImgStatus;
-(function (ImgStatus) {
-    ImgStatus[ImgStatus["PENDING"] = 0] = "PENDING";
-    ImgStatus[ImgStatus["RESOLVE"] = 1] = "RESOLVE";
-    ImgStatus[ImgStatus["REJECT"] = 2] = "REJECT";
-})(ImgStatus || (ImgStatus = {}));
-class Image extends Shape_1.Shape {
-    constructor(props) {
-        super();
-        this.props = props;
-        this.loadStatus = ImgStatus.PENDING;
-        this.img = document.createElement('img');
-        this.img.src = props.source;
-        this.img.onload = () => {
-            this.loadStatus = ImgStatus.RESOLVE;
-        };
-        this.img.onerror = () => {
-            this.loadStatus = ImgStatus.REJECT;
-        };
-    }
-    draw(ctx) {
-        const { leftTop: { x, y }, width, height, source, } = this.props;
-        if (this.loadStatus === ImgStatus.PENDING) {
-            setTimeout(() => {
-                this.draw(ctx);
-                return;
-            }, 300);
-        }
-        else if (this.loadStatus === ImgStatus.REJECT) {
-            throw new error_1.default(error_1.ErrorType.SourceError, 'Image resource failed to load');
-        }
-        else {
-            ctx.drawImage(this.img, x, y, width, height);
-        }
-    }
-    isPointInClosedRegion(mouse) {
-        const { x, y } = (mouse === null || mouse === void 0 ? void 0 : mouse.point) || mouse;
-        const { leftTop, width, height } = this.props;
-        const { x: minX, y: minY } = leftTop;
-        const maxX = minX + width;
-        const maxY = minY + height;
-        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-            return true;
-        }
-        return false;
-    }
-    change(changeProps, display) {
-        const { leftTop, width, height, source } = changeProps;
-        const beforeProps = this.props;
-        this.props = {
-            leftTop: leftTop || beforeProps.leftTop,
-            width: width || beforeProps.width,
-            height: height || beforeProps.height,
-            source: source || beforeProps.source,
-        };
-        display.redraw();
-    }
-}
-exports.Image = Image;
-
-
-/***/ }),
 /* 8 */
-/***/ ((__unused_webpack_module, exports) => {
-
-
-/**
- * 通用错误处理
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.error = exports.warn = exports.ErrorType = void 0;
-var ErrorType;
-(function (ErrorType) {
-    ErrorType[ErrorType["ConfigError"] = 1] = "ConfigError";
-    ErrorType[ErrorType["RenderError"] = 2] = "RenderError";
-    ErrorType[ErrorType["SourceError"] = 3] = "SourceError";
-})(ErrorType = exports.ErrorType || (exports.ErrorType = {}));
-const warn = (msg) => {
-    console.warn(msg);
-};
-exports.warn = warn;
-const error = (msg) => {
-    console.error(msg);
-};
-exports.error = error;
-class BaseError extends Error {
-    constructor(type, msg) {
-        super();
-        // this.message = value;
-        switch (type) {
-            case ErrorType.ConfigError:
-                this.name = ErrorType[ErrorType.ConfigError];
-                this.message = msg;
-                break;
-            case ErrorType.RenderError:
-                this.name = ErrorType[ErrorType.RenderError];
-                this.message = msg;
-                break;
-            case ErrorType.SourceError:
-                this.name = ErrorType[ErrorType.SourceError];
-                this.message = msg;
-                break;
-        }
-    }
-}
-exports["default"] = BaseError;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Rect = void 0;
-const Shape_1 = __webpack_require__(6);
-const tween_js_1 = __importStar(__webpack_require__(10));
-class Rect extends Shape_1.Shape {
-    constructor(props) {
-        super();
-        this.props = props;
-        this.isAnimating = false;
-        this.bindProps();
-    }
-    initAnimate() {
-        tween_js_1.default.update();
-    }
-    bindProps() {
-        this.x = this.props.leftTop.x;
-        this.y = this.props.leftTop.y;
-        this.width = this.props.width;
-        this.height = this.props.height;
-        this.tween = new tween_js_1.Tween({
-            x: this.props.leftTop.x,
-            y: this.props.leftTop.y,
-            width: this.props.width,
-            height: this.props.height,
-        });
-    }
-    draw(ctx) {
-        // this.initAnimate()
-        const { leftTop, width, height, fillColor = 'skyblue' } = this.props;
-        ctx.save();
-        ctx.beginPath();
-        ctx.fillStyle = fillColor;
-        ctx.fillRect(leftTop.x, leftTop.y, width, height);
-        ctx.closePath();
-        ctx.restore();
-    }
-    // 判断点击的点是否在图形内部
-    isPointInClosedRegion(mouse) {
-        const { x, y } = mouse.point || mouse;
-        const { leftTop, width, height } = this.props;
-        const { x: minX, y: minY } = leftTop;
-        const maxX = minX + width;
-        const maxY = minY + height;
-        if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
-            return true;
-        }
-        return false;
-    }
-    change(changeProps, duration, repeat = 1, onComplete) {
-        const { leftTop, width, height, fillColor } = changeProps;
-        const beforeProps = this.props;
-        const changeProp = {
-            // leftTop: leftTop || beforeProps.leftTop,
-            x: (leftTop === null || leftTop === void 0 ? void 0 : leftTop.x) || beforeProps.leftTop.x,
-            y: (leftTop === null || leftTop === void 0 ? void 0 : leftTop.y) || beforeProps.leftTop.y,
-            width: width || beforeProps.width,
-            height: height || beforeProps.height,
-            fillColor: fillColor || beforeProps.fillColor,
-        };
-        console.log('change!!');
-        this.tween
-            .to(changeProp, 3000)
-            .easing(tween_js_1.default.Easing.Linear.None)
-            .onUpdate((position) => {
-            this.props = {
-                leftTop: {
-                    x: position.x,
-                    y: position.y,
-                },
-                width: position.width,
-                height: position.height,
-                fillColor: this.props.fillColor,
-            };
-            this.isAnimating = true;
-        })
-            .onComplete(() => {
-            this.isAnimating = false;
-            onComplete === null || onComplete === void 0 ? void 0 : onComplete();
-        })
-            .start()
-            .repeat(repeat);
-        console.log('333');
-        // display.redraw()
-    }
-}
-exports.Rect = Rect;
-
-
-/***/ }),
-/* 10 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -1299,13 +1101,322 @@ var exports = {
 
 
 /***/ }),
+/* 9 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.checkInRegin = void 0;
+const types_1 = __webpack_require__(5);
+function checkRect(mouse, shape) {
+    const { x, y } = mouse.point || mouse;
+    const { x: minX, y: minY, width, height } = shape;
+    const maxX = minX + width;
+    const maxY = minY + height;
+    if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+        return true;
+    }
+    return false;
+}
+function checkCircle(mouse, shape) {
+    const { center, radius } = shape;
+    return mouse.point.distance(center) <= radius * radius;
+}
+function checkInRegin(ShapeType, mouse, shape) {
+    switch (ShapeType) {
+        case types_1.TShape.RECT:
+        case types_1.TShape.Image:
+            return checkRect(mouse, shape);
+        case types_1.TShape.Circle:
+            return checkCircle(mouse, shape);
+    }
+}
+exports.checkInRegin = checkInRegin;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Image = void 0;
+const Shape_1 = __webpack_require__(7);
+const types_1 = __webpack_require__(5);
+const error_1 = __importStar(__webpack_require__(11));
+const tween_js_1 = __webpack_require__(8);
+const pointCheck_1 = __webpack_require__(9);
+var ImgStatus;
+(function (ImgStatus) {
+    ImgStatus[ImgStatus["PENDING"] = 0] = "PENDING";
+    ImgStatus[ImgStatus["RESOLVE"] = 1] = "RESOLVE";
+    ImgStatus[ImgStatus["REJECT"] = 2] = "REJECT";
+})(ImgStatus || (ImgStatus = {}));
+class Image extends Shape_1.Shape {
+    constructor(props) {
+        super();
+        this.props = props;
+        this.loadStatus = ImgStatus.PENDING;
+        this.bindProps();
+    }
+    get x() {
+        return this.props.leftTop.x;
+    }
+    get y() {
+        return this.props.leftTop.y;
+    }
+    get width() {
+        return this.props.width;
+    }
+    get height() {
+        return this.props.height;
+    }
+    bindProps() {
+        this.tween = new tween_js_1.Tween({
+            x: this.props.leftTop.x,
+            y: this.props.leftTop.y,
+            width: this.props.width,
+            height: this.props.height,
+        });
+    }
+    draw(ctx) {
+        const { leftTop: { x, y }, width, height, source, } = this.props;
+        if (this.loadStatus === ImgStatus.PENDING) {
+            setTimeout(() => {
+                this.draw(ctx);
+                return;
+            }, 300);
+        }
+        else if (this.loadStatus === ImgStatus.REJECT) {
+            throw new error_1.default(error_1.ErrorType.SourceError, 'Image resource failed to load');
+        }
+        else {
+            console.log('ccddss');
+            // ctx.drawImage(this.img, x, y, width, height)
+            ctx.drawImage(source, x, y, width, height);
+        }
+        ctx.drawImage(source, x, y, width, height);
+    }
+    isPointInClosedRegion(mouse) {
+        return (0, pointCheck_1.checkInRegin)(types_1.TShape.Image, mouse, this);
+    }
+    change(changeProps, display) {
+        const { leftTop, width, height, source } = changeProps;
+        const beforeProps = this.props;
+        this.props = {
+            leftTop: leftTop || beforeProps.leftTop,
+            width: width || beforeProps.width,
+            height: height || beforeProps.height,
+            source: source || beforeProps.source,
+        };
+        display.redraw();
+    }
+}
+exports.Image = Image;
+
+
+/***/ }),
 /* 11 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/**
+ * 通用错误处理
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.error = exports.warn = exports.ErrorType = void 0;
+var ErrorType;
+(function (ErrorType) {
+    ErrorType[ErrorType["ConfigError"] = 1] = "ConfigError";
+    ErrorType[ErrorType["RenderError"] = 2] = "RenderError";
+    ErrorType[ErrorType["SourceError"] = 3] = "SourceError";
+    ErrorType[ErrorType["SOURCE_NOT_FOUND"] = 4] = "SOURCE_NOT_FOUND";
+})(ErrorType = exports.ErrorType || (exports.ErrorType = {}));
+const warn = (msg) => {
+    console.warn(msg);
+};
+exports.warn = warn;
+const error = (msg) => {
+    console.error(msg);
+};
+exports.error = error;
+class BaseError extends Error {
+    constructor(type, msg) {
+        super();
+        // this.message = value;
+        switch (type) {
+            case ErrorType.ConfigError:
+                this.name = ErrorType[ErrorType.ConfigError];
+                this.message = msg;
+                break;
+            case ErrorType.RenderError:
+                this.name = ErrorType[ErrorType.RenderError];
+                this.message = msg;
+                break;
+            case ErrorType.SourceError:
+                this.name = ErrorType[ErrorType.SourceError];
+                this.message = msg;
+                break;
+        }
+    }
+}
+exports["default"] = BaseError;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Rect = void 0;
+const types_1 = __webpack_require__(5);
+const Shape_1 = __webpack_require__(7);
+const tween_js_1 = __importStar(__webpack_require__(8));
+const pointCheck_1 = __webpack_require__(9);
+class Rect extends Shape_1.Shape {
+    constructor(props) {
+        super();
+        this.props = props;
+        // private tween: any
+        this.isAnimating = false;
+        this.bindProps();
+    }
+    get x() {
+        return this.props.leftTop.x;
+    }
+    get y() {
+        return this.props.leftTop.y;
+    }
+    get width() {
+        return this.props.width;
+    }
+    get height() {
+        return this.props.height;
+    }
+    bindProps() {
+        this.tween = new tween_js_1.Tween({
+            x: this.props.leftTop.x,
+            y: this.props.leftTop.y,
+            width: this.props.width,
+            height: this.props.height,
+        });
+    }
+    draw(ctx) {
+        // this.initAnimate()
+        const { leftTop, width, height, fillColor = 'skyblue' } = this.props;
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = fillColor;
+        ctx.fillRect(leftTop.x, leftTop.y, width, height);
+        ctx.closePath();
+        ctx.restore();
+    }
+    // 判断点击的点是否在图形内部
+    isPointInClosedRegion(mouse) {
+        return (0, pointCheck_1.checkInRegin)(types_1.TShape.RECT, mouse, this);
+    }
+    change(changeProps, { duration = 2000, repeat = 0, delay = 0, repeatDelay, onComplete, onUpdate, onStop, onRepeat, } // duration: number,
+    ) {
+        const { leftTop, width, height, fillColor } = changeProps;
+        const beforeProps = this.props;
+        const changeProp = {
+            x: (leftTop === null || leftTop === void 0 ? void 0 : leftTop.x) || beforeProps.leftTop.x,
+            y: (leftTop === null || leftTop === void 0 ? void 0 : leftTop.y) || beforeProps.leftTop.y,
+            width: width || beforeProps.width,
+            height: height || beforeProps.height,
+            fillColor: fillColor || beforeProps.fillColor,
+        };
+        this.tween
+            .to(changeProp, duration)
+            .easing(tween_js_1.default.Easing.Linear.None)
+            .onUpdate((position) => {
+            this.props = {
+                leftTop: {
+                    x: position.x,
+                    y: position.y,
+                },
+                width: position.width,
+                height: position.height,
+                fillColor: this.props.fillColor,
+            };
+            this.isAnimating = true;
+            onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate();
+        })
+            .onComplete(() => {
+            this.isAnimating = false;
+            onComplete === null || onComplete === void 0 ? void 0 : onComplete();
+        })
+            .onStop(() => {
+            onStop === null || onStop === void 0 ? void 0 : onStop();
+        })
+            .onRepeat(() => {
+            onRepeat === null || onRepeat === void 0 ? void 0 : onRepeat();
+        })
+            .start()
+            .delay(delay)
+            .repeatDelay(repeatDelay || 1000)
+            .repeat(repeat);
+        // display.redraw()
+    }
+}
+exports.Rect = Rect;
+
+
+/***/ }),
+/* 13 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Text = void 0;
-const Shape_1 = __webpack_require__(6);
+const Shape_1 = __webpack_require__(7);
 class Text extends Shape_1.Shape {
     constructor(props) {
         super();
@@ -1345,6 +1456,195 @@ class Text extends Shape_1.Shape {
     }
 }
 exports.Text = Text;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.RES = void 0;
+const error_1 = __importStar(__webpack_require__(11));
+const utils_1 = __webpack_require__(15);
+const await_to_js_1 = __importDefault(__webpack_require__(16));
+let sourceSuccessFn;
+let progressFn;
+let sourceCount = 0;
+const source2map = new Map();
+function getRes(key) {
+    if (source2map.has(key)) {
+        console.log('key', key);
+        return source2map.get(key);
+    }
+    throw new error_1.default(error_1.ErrorType.SOURCE_NOT_FOUND, `${key} resource is not found`);
+}
+function analyzeImageRes(source) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const [error, bitmap] = yield (0, await_to_js_1.default)((0, utils_1.createImgBitmap)(source.url));
+        if (error) {
+            throw new error_1.default(error_1.ErrorType.SourceError, `${source.key} resource failed to load`);
+        }
+        bindRes(source, bitmap);
+    });
+}
+function analyzeSoundRes(source) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const [error, bitmap] = yield (0, await_to_js_1.default)((0, utils_1.CreateSoundRes)(source.url));
+        if (error) {
+            throw new error_1.default(error_1.ErrorType.SourceError, `${source.key} resource failed to load`);
+        }
+        bindRes(source, bitmap);
+    });
+}
+function bindRes(source, bitmap) {
+    source2map.set(source.key, bitmap);
+    progressFn && progressFn(source2map.size, sourceCount);
+    if (source2map.size === sourceCount) {
+        sourceSuccessFn && sourceSuccessFn();
+    }
+}
+function resolveAssets(map, onProgress) {
+    sourceCount = map.length;
+    map.forEach(source => {
+        switch (source.type) {
+            case 'image':
+                analyzeImageRes(source);
+                break;
+            case 'sound':
+                analyzeSoundRes(source);
+        }
+    });
+    progressFn = onProgress;
+}
+function onLoad(fn) {
+    sourceSuccessFn = fn;
+}
+exports.RES = {
+    getRes,
+    resolve: resolveAssets,
+    onLoad,
+};
+
+
+/***/ }),
+/* 15 */
+/***/ (function(__unused_webpack_module, exports) {
+
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateSoundRes = exports.createImgBitmap = void 0;
+var SourceStatus;
+(function (SourceStatus) {
+    SourceStatus[SourceStatus["PENDING"] = 0] = "PENDING";
+    SourceStatus[SourceStatus["RESOLVE"] = 1] = "RESOLVE";
+    SourceStatus[SourceStatus["REJECT"] = 2] = "REJECT";
+})(SourceStatus || (SourceStatus = {}));
+function createImgBitmap(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                const res = yield createImageBitmap(img, 0, 0, img.width, img.height);
+                resolve(res);
+            });
+        };
+        img.onerror = function () {
+            reject(SourceStatus.REJECT);
+        };
+    });
+}
+exports.createImgBitmap = createImgBitmap;
+function CreateSoundRes(url) {
+    return new Promise((resolve, reject) => {
+        const audio = new Audio();
+        audio.autoplay = true;
+        audio.src = url;
+        // audio标签不支持 onload事件，但是支持一个 oncanplaythrough 事件
+        audio.oncanplaythrough = function () {
+            resolve(audio);
+        };
+        audio.onerror = function () {
+            reject(SourceStatus.REJECT);
+        };
+    });
+}
+exports.CreateSoundRes = CreateSoundRes;
+
+
+/***/ }),
+/* 16 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "to": () => (/* binding */ to)
+/* harmony export */ });
+/**
+ * @param { Promise } promise
+ * @param { Object= } errorExt - Additional Information you can pass to the err object
+ * @return { Promise }
+ */
+function to(promise, errorExt) {
+    return promise
+        .then(function (data) { return [null, data]; })
+        .catch(function (err) {
+        if (errorExt) {
+            Object.assign(err, errorExt);
+        }
+        return [err, undefined];
+    });
+}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (to);
+//# sourceMappingURL=await-to-js.es5.js.map
 
 
 /***/ })
@@ -1417,6 +1717,7 @@ exports["default"] = {
     Circle: core_1.Circle,
     Image: core_1.Image,
     Text: core_1.Text,
+    RES: core_1.RES,
 };
 
 })();

@@ -31,11 +31,9 @@ export function CreateSoundRes(url: string): Promise<HTMLAudioElement> {
 		audio.src = url
 		// audio标签不支持 onload事件，但是支持一个 oncanplaythrough 事件
 		audio.oncanplaythrough = function () {
-			audio.play()
 			resolve(audio)
 		}
 		audio.onerror = function () {
-			console.log('error')
 			reject(SourceStatus.REJECT)
 		}
 	})

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="375" height="667"></canvas>
+		<script>
+			const canvas = document.getElementById('myCanvas')
+			const ctx = canvas.getContext('2d')
+		</script>
+		<script src="../../dist/mini_engine.js"></script>
+		<script src="./index.js"></script>
+	</body>
+</html>

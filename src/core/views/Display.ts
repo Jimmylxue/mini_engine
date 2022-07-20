@@ -4,6 +4,7 @@ import { EVENT_ARR } from 'types/types'
 
 export class Display {
 	private animateTimer: number = 0
+	public fnArr?: () => void
 	constructor(
 		private canvas: HTMLElement,
 		private ctx: CanvasRenderingContext2D,
@@ -27,6 +28,7 @@ export class Display {
 				// 性能优化 - 尽量的减少 绘画次数
 				this.redraw()
 			}
+			this.trigger()
 			this.animateTimer = requestAnimationFrame(animate)
 			// cancelAnimationFrame(this.animateTimer)
 		}
@@ -78,14 +80,23 @@ export class Display {
 
 	// 清除画布
 	clearCanvas() {
-		this.ctx.clearRect(0, 0, 500, 500)
+		this.ctx.clearRect(0, 0, 375, 667)
 	}
 
 	// 重新绘画
 	redraw() {
+		console.log('redwar')
 		this.clearCanvas()
 		this.allShapes.forEach(shape => {
 			shape.draw(this.ctx)
 		})
+	}
+
+	track(fn: () => void) {
+		this.fnArr = fn
+	}
+
+	trigger() {
+		this.fnArr?.()
 	}
 }
