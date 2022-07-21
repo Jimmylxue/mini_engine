@@ -6,6 +6,16 @@ const mapJson = [
 		url: './assets/bg.jpg',
 		type: 'image',
 	},
+	{
+		key: 'hero',
+		url: './assets/hero.png',
+		type: 'image',
+	},
+	{
+		key: 'bullet',
+		url: './assets/bullet.png',
+		type: 'image',
+	},
 	// {
 	// 	key: 'bg',
 	// 	url: '',
@@ -52,8 +62,61 @@ RES.onLoad(() => {
 			bg1.y = bg1.height
 		}
 		if (bg2.y < -bg2.height + 1) {
-			bg2.y = bg2.height
+			bg2.y = bg2.height - 2
+		}
+	})
+
+	const hero = new CImage({
+		leftTop: {
+			x: 0,
+			y: 0,
+		},
+		width: 80,
+		height: 80,
+		source: RES.getRes('hero'),
+	})
+	// hero.on('mousemove')
+	display.add(hero)
+
+	let isDown = false
+	hero.on('mousedown', () => {
+		isDown = true
+	})
+
+	hero.on('mouseup', () => {
+		isDown = false
+	})
+
+	hero.on('mousemove', event => {
+		if (!isDown) {
+			return
+		}
+		let startPoint = {
+			x: event.point.x - hero.width / 2,
+			y: event.point.y - hero.height / 2,
+		}
+		hero.x = startPoint.x
+		hero.y = startPoint.y
+	})
+
+	// setInterval(() => {
+
+	// }, 1000)
+	let num = 0
+	hero.track(() => {
+		num++
+		if (num === 100) {
+			num = 0
+			const bullet = new CImage({
+				leftTop: {
+					x: hero.x + hero.width / 2,
+					y: hero.y - 30,
+				},
+				width: 30,
+				height: 30,
+				source: RES.getRes('bullet'),
+			})
+			display.add(bullet)
 		}
 	})
 })
-// console.log(RES)

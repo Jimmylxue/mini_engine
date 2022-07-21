@@ -2,7 +2,7 @@ import { Shape } from './Shape'
 import { ImageProps, TShape } from 'types/types'
 import { Display } from './Display'
 import BaseError, { ErrorType, error } from '../error'
-import TWEEN, { Tween } from '@tweenjs/tween.js'
+import { Tween } from '@tweenjs/tween.js'
 import { checkInRegin } from '@utils/pointCheck'
 import { display } from '.'
 
@@ -39,8 +39,16 @@ export class Image extends Shape {
 		return this.props.width
 	}
 
+	set width(width: number) {
+		this.change({ width }, display)
+	}
+
 	get height() {
 		return this.props.height
+	}
+
+	set height(height: number) {
+		this.change({ height }, display)
 	}
 
 	bindProps() {
@@ -70,8 +78,6 @@ export class Image extends Shape {
 				'Image resource failed to load'
 			)
 		} else {
-			console.log('ccddss')
-			// ctx.drawImage(this.img, x, y, width, height)
 			ctx.drawImage(source as unknown as ImageBitmap, x, y, width, height)
 		}
 		ctx.drawImage(source as unknown as ImageBitmap, x, y, width, height)
