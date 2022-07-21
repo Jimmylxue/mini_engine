@@ -6,7 +6,9 @@ export declare class Image extends Shape {
     private loadStatus;
     constructor(props: ImageProps);
     get x(): number;
+    set x(x: number);
     get y(): number;
+    set y(y: number);
     get width(): number;
     get height(): number;
     bindProps(): void;

@@ -1,4 +1,4 @@
-const { RES, Display, Image: CImage } = mini_engine
+const { RES, createDisplay, Image: CImage } = mini_engine
 
 const mapJson = [
 	{
@@ -22,7 +22,7 @@ RES.resolve(mapJson, (process, sum) => {
 })
 
 RES.onLoad(() => {
-	const display = new Display(canvas, ctx)
+	const display = createDisplay({ canvas, ctx })
 
 	const bg1 = new CImage({
 		leftTop: {
@@ -33,41 +33,27 @@ RES.onLoad(() => {
 		height: 667,
 		source: RES.getRes('bg'),
 	})
-	// const bg2 = new CImage({
-	// 	leftTop: {
-	// 		x: -375,
-	// 		y: -667,
-	// 	},
-	// 	width: 375,
-	// 	height: 667,
-	// 	source: RES.getRes('bg'),
-	// })
+	const bg2 = new CImage({
+		leftTop: {
+			x: 0,
+			y: -667,
+		},
+		width: 375,
+		height: 667,
+		source: RES.getRes('bg'),
+	})
 	display.add(bg1)
-	// display.add(bg2)
+	display.add(bg2)
 
-	// bg1.track(() => {
-	// 	console.log('change！')
-	// })
 	display.track(() => {
-		// console.log(bg1.y)
-		bg1.change(
-			{
-				leftTop: {
-					y: bg1.y - 3,
-					x: bg1.x,
-				},
-			},
-			display
-		)
-		// bg2.change(
-		// 	{
-		// 		leftTop: {
-		// 			y: bg2.y - 1,
-		// 			x: bg2.x,
-		// 		},
-		// 	},
-		// 	display
-		// )
+		bg1.y -= 1
+		bg2.y -= 1
+		if (bg1.y < -bg1.height + 1) {
+			bg1.y = bg1.height
+		}
+		if (bg2.y < -bg2.height + 1) {
+			bg2.y = bg2.height
+		}
 	})
 })
 // console.log(RES)

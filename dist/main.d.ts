@@ -1,6 +1,6 @@
-import { Display, Rect, Circle, Image, Text } from './core';
+import { createDisplay, Rect, Circle, Image, Text } from './core';
 declare const _default: {
-    Display: typeof Display;
+    createDisplay: typeof createDisplay;
     Rect: typeof Rect;
     Circle: typeof Circle;
     Image: typeof Image;

@@ -85,7 +85,6 @@ export class Display {
 
 	// 重新绘画
 	redraw() {
-		console.log('redwar')
 		this.clearCanvas()
 		this.allShapes.forEach(shape => {
 			shape.draw(this.ctx)

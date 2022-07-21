@@ -4,6 +4,7 @@ import { Display } from './Display'
 import BaseError, { ErrorType, error } from '../error'
 import TWEEN, { Tween } from '@tweenjs/tween.js'
 import { checkInRegin } from '@utils/pointCheck'
+import { display } from '.'
 
 enum ImgStatus {
 	PENDING,
@@ -22,8 +23,16 @@ export class Image extends Shape {
 		return this.props.leftTop.x
 	}
 
+	set x(x: number) {
+		this.change({ leftTop: { x: x, y: this.y } }, display)
+	}
+
 	get y() {
 		return this.props.leftTop.y
+	}
+
+	set y(y: number) {
+		this.change({ leftTop: { x: this.x, y } }, display)
 	}
 
 	get width() {

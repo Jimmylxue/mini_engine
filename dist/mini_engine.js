@@ -31,7 +31,13 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__webpack_require__(2), exports);
+exports.createDisplay = exports.Text = exports.Rect = exports.Image = exports.Circle = void 0;
+var views_1 = __webpack_require__(2);
+Object.defineProperty(exports, "Circle", ({ enumerable: true, get: function () { return views_1.Circle; } }));
+Object.defineProperty(exports, "Image", ({ enumerable: true, get: function () { return views_1.Image; } }));
+Object.defineProperty(exports, "Rect", ({ enumerable: true, get: function () { return views_1.Rect; } }));
+Object.defineProperty(exports, "Text", ({ enumerable: true, get: function () { return views_1.Text; } }));
+Object.defineProperty(exports, "createDisplay", ({ enumerable: true, get: function () { return views_1.createDisplay; } }));
 __exportStar(__webpack_require__(14), exports);
 
 
@@ -41,9 +47,10 @@ __exportStar(__webpack_require__(14), exports);
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Text = exports.Rect = exports.Image = exports.Circle = exports.Display = void 0;
-var Display_1 = __webpack_require__(3);
-Object.defineProperty(exports, "Display", ({ enumerable: true, get: function () { return Display_1.Display; } }));
+exports.createDisplay = exports.display = exports.Text = exports.Rect = exports.Image = exports.Circle = exports.Display = void 0;
+const Display_1 = __webpack_require__(3);
+var Display_2 = __webpack_require__(3);
+Object.defineProperty(exports, "Display", ({ enumerable: true, get: function () { return Display_2.Display; } }));
 var Circle_1 = __webpack_require__(6);
 Object.defineProperty(exports, "Circle", ({ enumerable: true, get: function () { return Circle_1.Circle; } }));
 var Image_1 = __webpack_require__(10);
@@ -52,6 +59,13 @@ var Rect_1 = __webpack_require__(12);
 Object.defineProperty(exports, "Rect", ({ enumerable: true, get: function () { return Rect_1.Rect; } }));
 var Text_1 = __webpack_require__(13);
 Object.defineProperty(exports, "Text", ({ enumerable: true, get: function () { return Text_1.Text; } }));
+function createDisplay({ canvas, ctx, }) {
+    if (!exports.display) {
+        exports.display = new Display_1.Display(canvas, ctx);
+    }
+    return exports.display;
+}
+exports.createDisplay = createDisplay;
 
 
 /***/ }),
@@ -130,7 +144,6 @@ class Display {
     }
     // 重新绘画
     redraw() {
-        console.log('redwar');
         this.clearCanvas();
         this.allShapes.forEach(shape => {
             shape.draw(this.ctx);
@@ -1169,6 +1182,7 @@ const types_1 = __webpack_require__(5);
 const error_1 = __importStar(__webpack_require__(11));
 const tween_js_1 = __webpack_require__(8);
 const pointCheck_1 = __webpack_require__(9);
+const _1 = __webpack_require__(2);
 var ImgStatus;
 (function (ImgStatus) {
     ImgStatus[ImgStatus["PENDING"] = 0] = "PENDING";
@@ -1185,8 +1199,14 @@ class Image extends Shape_1.Shape {
     get x() {
         return this.props.leftTop.x;
     }
+    set x(x) {
+        this.change({ leftTop: { x: x, y: this.y } }, _1.display);
+    }
     get y() {
         return this.props.leftTop.y;
+    }
+    set y(y) {
+        this.change({ leftTop: { x: this.x, y } }, _1.display);
     }
     get width() {
         return this.props.width;
@@ -1712,7 +1732,7 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __webpack_require__(1);
 exports["default"] = {
-    Display: core_1.Display,
+    createDisplay: core_1.createDisplay,
     Rect: core_1.Rect,
     Circle: core_1.Circle,
     Image: core_1.Image,

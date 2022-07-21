@@ -1,7 +1,7 @@
-import { Display, Rect, Circle, Image, Text, RES } from './core'
+import { createDisplay, Rect, Circle, Image, Text, RES } from './core'
 
 export default {
-	Display,
+	createDisplay,
 	Rect,
 	Circle,
 	Image,
