@@ -16,4 +16,5 @@ export declare class Display {
     redraw(): void;
     track(fn: () => void): void;
     trigger(): void;
+    release(): void;
 }

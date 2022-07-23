@@ -7,4 +7,5 @@ export declare class Shape {
     initAnimate(): void;
     track(fn: () => void): void;
     trigger(): void;
+    release(): void;
 }

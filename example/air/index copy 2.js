@@ -88,75 +88,31 @@ RES.onLoad(() => {
 		enemy.track(() => {
 			enemy.y += 2
 			if (enemy.y >= 550) {
-				// console.log('删除敌机')
+				console.log('删除敌机')
 				display.remove(enemy)
 				enemyList.delete(enemy)
 			}
 		})
 	}
 
-	let gameOver = false
-
 	function checkHit() {
-		console.log('uuuu')
-
 		// 碰撞检测
 		bulletList.forEach(bullet => {
-			enemyList.forEach(enemy => {
-				console.log(bullet.intersects(enemy), 'sss')
-				if (bullet.intersects(enemy)) {
-					enemyList.delete(enemy)
-					bulletList.delete(bullet)
-					display.remove(enemy)
-					display.remove(bullet)
-					return
-				}
-				if (enemy.intersects(hero)) {
-					gameOverd()
-					// display.release()
-					// enemy.release()
-					// bullet.release()
-					console.log('碰撞了，游戏结束')
-				}
-			})
+			enemyList.forEach(enemy => {})
 		})
 	}
 
 	// 全局事件
 	let enemyTick = 0
 	display.track(() => {
-		console.log('aaasss')
-		bgMove()
-		enemyTick++
-		if (enemyTick === 100) {
-			initEnemy()
-			enemyTick = 0
-		}
-		checkHit()
+		// bgMove()
+		// enemyTick++
+		// if (enemyTick === 100) {
+		// 	initEnemy()
+		// 	enemyTick = 0
+		// }
+		// checkHit()
 	})
-
-	// setTimeout(() => {
-	// 	display.release()
-	// 	display.remove(hero)
-	// 	enemyList.forEach(enemy => {
-	// 		display.remove(enemy)
-	// 	})
-	// 	bulletList.forEach(bullet => {
-	// 		display.remove(bullet)
-	// 	})
-	// 	// hero.release()
-	// }, 2000)
-
-	function gameOverd(params) {
-		display.release()
-		display.remove(hero)
-		enemyList.forEach(enemy => {
-			display.remove(enemy)
-		})
-		bulletList.forEach(bullet => {
-			display.remove(bullet)
-		})
-	}
 
 	const hero = new CImage({
 		leftTop: {
@@ -168,6 +124,28 @@ RES.onLoad(() => {
 		source: RES.getRes('hero'),
 	})
 	display.add(hero)
+
+	const hero1 = new CImage({
+		leftTop: {
+			x: 375 / 2 - 80 / 2 - 50,
+			y: 667 - 100 - 50,
+		},
+		width: 80,
+		height: 80,
+		source: RES.getRes('hero'),
+	})
+	display.add(hero1)
+
+	function checkHit(rectA, rectB) {
+		return !(
+			rectA.x + rectA.width < rectB.x ||
+			rectB.x + rectB.width < rectA.x ||
+			rectA.y + rectA.height < rectB.y ||
+			rectB.y + rectB.height < rectA.y
+		)
+	}
+
+	console.log(checkHit(hero, hero1))
 
 	let isDown = false
 	hero.on('mousedown', () => {
@@ -192,31 +170,29 @@ RES.onLoad(() => {
 
 	let num = 0
 	hero.track(() => {
-		console.log('还在运动')
 		num++
 		if (num === 100) {
 			num = 0
-			const bullet = new CImage({
-				leftTop: {
-					x: hero.x + hero.width / 2 - 15 / 2,
-					y: hero.y - 20,
-				},
-				width: 15,
-				height: 15,
-				source: RES.getRes('bullet'),
-			})
-			display.add(bullet)
-			bulletList.add(bullet)
+			// const bullet = new CImage({
+			// 	leftTop: {
+			// 		x: hero.x + hero.width / 2 - 15 / 2,
+			// 		y: hero.y - 20,
+			// 	},
+			// 	width: 15,
+			// 	height: 15,
+			// 	source: RES.getRes('bullet'),
+			// })
+			// display.add(bullet)
+			// bulletList.add(bullet)
 
-			bullet.track(() => {
-				console.log('QQQQQ')
-				bullet.y -= 5
-				if (bullet.y <= 50) {
-					console.log('删除子弹')
-					display.remove(bullet)
-					bulletList.delete(bullet)
-				}
-			})
+			// bullet.track(() => {
+			// 	bullet.y -= 5
+			// 	if (bullet.y <= 50) {
+			// 		console.log('删除子弹')
+			// 		display.remove(bullet)
+			// 		bulletList.delete(bullet)
+			// 	}
+			// })
 		}
 	})
 })

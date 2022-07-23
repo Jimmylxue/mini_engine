@@ -28,8 +28,12 @@ export class Display {
 				// 性能优化 - 尽量的减少 绘画次数
 				this.redraw()
 			}
+			this.redraw()
 			this.trigger()
 			this.animateTimer = requestAnimationFrame(animate)
+			// setTimeout(() => {
+			// 	cancelAnimationFrame(this.animateTimer)
+			// }, 2000)
 			// cancelAnimationFrame(this.animateTimer)
 		}
 
@@ -76,6 +80,7 @@ export class Display {
 		this.allShapes.delete(shape)
 		this.clearCanvas()
 		this.redraw()
+		// shape?.release()
 	}
 
 	// 清除画布
@@ -97,5 +102,9 @@ export class Display {
 
 	trigger() {
 		this.fnArr?.()
+	}
+
+	release() {
+		this.fnArr = () => {}
 	}
 }

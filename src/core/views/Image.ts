@@ -5,6 +5,7 @@ import BaseError, { ErrorType, error } from '../error'
 import { Tween } from '@tweenjs/tween.js'
 import { checkInRegin } from '@utils/pointCheck'
 import { display } from '.'
+import { checkHit } from '@utils/index'
 
 enum ImgStatus {
 	PENDING,
@@ -97,5 +98,10 @@ export class Image extends Shape {
 			source: source || beforeProps.source,
 		}
 		display.redraw()
+	}
+
+	intersects(shape: Image) {
+		// console.log('aaaa')
+		return checkHit(this, shape)
 	}
 }

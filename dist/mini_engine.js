@@ -38,7 +38,7 @@ Object.defineProperty(exports, "Image", ({ enumerable: true, get: function () { 
 Object.defineProperty(exports, "Rect", ({ enumerable: true, get: function () { return views_1.Rect; } }));
 Object.defineProperty(exports, "Text", ({ enumerable: true, get: function () { return views_1.Text; } }));
 Object.defineProperty(exports, "createDisplay", ({ enumerable: true, get: function () { return views_1.createDisplay; } }));
-__exportStar(__webpack_require__(14), exports);
+__exportStar(__webpack_require__(15), exports);
 
 
 /***/ }),
@@ -55,9 +55,9 @@ var Circle_1 = __webpack_require__(6);
 Object.defineProperty(exports, "Circle", ({ enumerable: true, get: function () { return Circle_1.Circle; } }));
 var Image_1 = __webpack_require__(10);
 Object.defineProperty(exports, "Image", ({ enumerable: true, get: function () { return Image_1.Image; } }));
-var Rect_1 = __webpack_require__(12);
+var Rect_1 = __webpack_require__(13);
 Object.defineProperty(exports, "Rect", ({ enumerable: true, get: function () { return Rect_1.Rect; } }));
-var Text_1 = __webpack_require__(13);
+var Text_1 = __webpack_require__(14);
 Object.defineProperty(exports, "Text", ({ enumerable: true, get: function () { return Text_1.Text; } }));
 function createDisplay({ canvas, ctx, }) {
     if (!exports.display) {
@@ -101,8 +101,12 @@ class Display {
                 // 性能优化 - 尽量的减少 绘画次数
                 this.redraw();
             }
+            this.redraw();
             this.trigger();
             this.animateTimer = requestAnimationFrame(animate);
+            // setTimeout(() => {
+            // 	cancelAnimationFrame(this.animateTimer)
+            // }, 2000)
             // cancelAnimationFrame(this.animateTimer)
         };
         animate();
@@ -137,6 +141,7 @@ class Display {
         this.allShapes.delete(shape);
         this.clearCanvas();
         this.redraw();
+        // shape?.release()
     }
     // 清除画布
     clearCanvas() {
@@ -155,6 +160,9 @@ class Display {
     trigger() {
         var _a;
         (_a = this.fnArr) === null || _a === void 0 ? void 0 : _a.call(this);
+    }
+    release() {
+        this.fnArr = () => { };
     }
 }
 exports.Display = Display;
@@ -282,6 +290,9 @@ class Shape {
     trigger() {
         var _a;
         (_a = this.fnArr) === null || _a === void 0 ? void 0 : _a.call(this);
+    }
+    release() {
+        this.fnArr = undefined;
     }
 }
 exports.Shape = Shape;
@@ -1183,6 +1194,7 @@ const error_1 = __importStar(__webpack_require__(11));
 const tween_js_1 = __webpack_require__(8);
 const pointCheck_1 = __webpack_require__(9);
 const _1 = __webpack_require__(2);
+const index_1 = __webpack_require__(12);
 var ImgStatus;
 (function (ImgStatus) {
     ImgStatus[ImgStatus["PENDING"] = 0] = "PENDING";
@@ -1211,8 +1223,14 @@ class Image extends Shape_1.Shape {
     get width() {
         return this.props.width;
     }
+    set width(width) {
+        this.change({ width }, _1.display);
+    }
     get height() {
         return this.props.height;
+    }
+    set height(height) {
+        this.change({ height }, _1.display);
     }
     bindProps() {
         this.tween = new tween_js_1.Tween({
@@ -1234,8 +1252,6 @@ class Image extends Shape_1.Shape {
             throw new error_1.default(error_1.ErrorType.SourceError, 'Image resource failed to load');
         }
         else {
-            console.log('ccddss');
-            // ctx.drawImage(this.img, x, y, width, height)
             ctx.drawImage(source, x, y, width, height);
         }
         ctx.drawImage(source, x, y, width, height);
@@ -1253,6 +1269,10 @@ class Image extends Shape_1.Shape {
             source: source || beforeProps.source,
         };
         display.redraw();
+    }
+    intersects(shape) {
+        // console.log('aaaa')
+        return (0, index_1.checkHit)(this, shape);
     }
 }
 exports.Image = Image;
@@ -1308,6 +1328,22 @@ exports["default"] = BaseError;
 
 /***/ }),
 /* 12 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.checkHit = void 0;
+function checkHit(rectA, rectB) {
+    return !(rectA.x + rectA.width < rectB.x ||
+        rectB.x + rectB.width < rectA.x ||
+        rectA.y + rectA.height < rectB.y ||
+        rectB.y + rectB.height < rectA.y);
+}
+exports.checkHit = checkHit;
+
+
+/***/ }),
+/* 13 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1430,7 +1466,7 @@ exports.Rect = Rect;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1479,7 +1515,7 @@ exports.Text = Text;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -1521,15 +1557,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RES = void 0;
 const error_1 = __importStar(__webpack_require__(11));
-const utils_1 = __webpack_require__(15);
-const await_to_js_1 = __importDefault(__webpack_require__(16));
+const utils_1 = __webpack_require__(16);
+const await_to_js_1 = __importDefault(__webpack_require__(17));
 let sourceSuccessFn;
 let progressFn;
 let sourceCount = 0;
 const source2map = new Map();
 function getRes(key) {
     if (source2map.has(key)) {
-        console.log('key', key);
+        // console.log('key', key)
         return source2map.get(key);
     }
     throw new error_1.default(error_1.ErrorType.SOURCE_NOT_FOUND, `${key} resource is not found`);
@@ -1583,7 +1619,7 @@ exports.RES = {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(__unused_webpack_module, exports) {
 
 
@@ -1638,7 +1674,7 @@ exports.CreateSoundRes = CreateSoundRes;
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);

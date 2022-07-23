@@ -88,44 +88,23 @@ RES.onLoad(() => {
 		enemy.track(() => {
 			enemy.y += 2
 			if (enemy.y >= 550) {
-				// console.log('删除敌机')
+				console.log('删除敌机')
 				display.remove(enemy)
 				enemyList.delete(enemy)
 			}
 		})
 	}
 
-	let gameOver = false
-
 	function checkHit() {
-		console.log('uuuu')
-
 		// 碰撞检测
 		bulletList.forEach(bullet => {
-			enemyList.forEach(enemy => {
-				console.log(bullet.intersects(enemy), 'sss')
-				if (bullet.intersects(enemy)) {
-					enemyList.delete(enemy)
-					bulletList.delete(bullet)
-					display.remove(enemy)
-					display.remove(bullet)
-					return
-				}
-				if (enemy.intersects(hero)) {
-					gameOverd()
-					// display.release()
-					// enemy.release()
-					// bullet.release()
-					console.log('碰撞了，游戏结束')
-				}
-			})
+			enemyList.forEach(enemy => {})
 		})
 	}
 
 	// 全局事件
 	let enemyTick = 0
 	display.track(() => {
-		console.log('aaasss')
 		bgMove()
 		enemyTick++
 		if (enemyTick === 100) {
@@ -134,29 +113,6 @@ RES.onLoad(() => {
 		}
 		checkHit()
 	})
-
-	// setTimeout(() => {
-	// 	display.release()
-	// 	display.remove(hero)
-	// 	enemyList.forEach(enemy => {
-	// 		display.remove(enemy)
-	// 	})
-	// 	bulletList.forEach(bullet => {
-	// 		display.remove(bullet)
-	// 	})
-	// 	// hero.release()
-	// }, 2000)
-
-	function gameOverd(params) {
-		display.release()
-		display.remove(hero)
-		enemyList.forEach(enemy => {
-			display.remove(enemy)
-		})
-		bulletList.forEach(bullet => {
-			display.remove(bullet)
-		})
-	}
 
 	const hero = new CImage({
 		leftTop: {
@@ -192,7 +148,6 @@ RES.onLoad(() => {
 
 	let num = 0
 	hero.track(() => {
-		console.log('还在运动')
 		num++
 		if (num === 100) {
 			num = 0
@@ -209,7 +164,6 @@ RES.onLoad(() => {
 			bulletList.add(bullet)
 
 			bullet.track(() => {
-				console.log('QQQQQ')
 				bullet.y -= 5
 				if (bullet.y <= 50) {
 					console.log('删除子弹')

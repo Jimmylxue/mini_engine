@@ -4,6 +4,7 @@ import TWEEN from '@tweenjs/tween.js'
 export class Shape {
 	public tween: any
 	public fnArr?: () => void
+
 	constructor(public listenerMap = new Map()) {}
 	on(eventName: string, listener: () => void) {
 		if (this.listenerMap.has(eventName)) {
@@ -23,5 +24,9 @@ export class Shape {
 
 	trigger() {
 		this.fnArr?.()
+	}
+
+	release() {
+		this.fnArr = undefined
 	}
 }
