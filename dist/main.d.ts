@@ -7,7 +7,7 @@ declare const _default: {
     Text: typeof Text;
     RES: {
         getRes: (key: string) => ImageBitmap | HTMLAudioElement | undefined;
-        resolve: (map: import("./core/rescurce/type").TSource, onProgress: () => void) => void;
+        resolve: (map: import("./core/resource/type").TSource, onProgress: () => void) => void;
         onLoad: (fn: () => void) => void;
     };
 };
