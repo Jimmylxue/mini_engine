@@ -11,7 +11,6 @@ const source2map = new Map<string, ImageBitmap | HTMLAudioElement>()
 
 function getRes(key: string) {
 	if (source2map.has(key)) {
-		// console.log('key', key)
 		return source2map.get(key)
 	}
 	throw new BaseError(

@@ -1,17 +1,26 @@
 import { Display } from './Display'
 import { Shape } from './Shape'
 import { TextProps } from 'types/types'
+import { display } from '.'
 
 export class Text extends Shape {
-	public text: string
+	// public text: string
 	public point: any
 	constructor(private props: TextProps) {
 		super()
-		this.text = props.text
+		// this.text = props.text
 		this.point = {
 			x: props.x,
 			y: props.y,
 		}
+	}
+
+	get text() {
+		return this.props.text
+	}
+
+	set text(text: string) {
+		this.change({ text }, display)
 	}
 
 	draw(ctx: CanvasRenderingContext2D) {
@@ -20,10 +29,10 @@ export class Text extends Shape {
 		ctx.font = size + 'px serif'
 		if (type === 'stroke') {
 			ctx.strokeStyle = color
-			ctx.fillText(text, x, y)
+			ctx.strokeText(text, x, y)
 		} else {
 			ctx.fillStyle = color
-			ctx.strokeText(text, x, y)
+			ctx.fillText(text, x, y)
 		}
 		ctx.restore()
 	}

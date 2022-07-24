@@ -1,4 +1,4 @@
-const { RES, createDisplay, Image: CImage } = mini_engine
+const { RES, createDisplay, Image: CImage, Text } = mini_engine
 
 const mapJson = [
 	{
@@ -21,16 +21,11 @@ const mapJson = [
 		url: './assets/enemy.png',
 		type: 'image',
 	},
-	// {
-	// 	key: 'bg',
-	// 	url: '',
-	// 	type: 'image',
-	// },
-	// {
-	// 	key: 'clean',
-	// 	url: 'https://shiheng-tech.oss-cn-shanghai.aliyuncs.com/shihengtest//1655171440449/%E7%AB%99%E9%95%BF%E7%B4%A0%E6%9D%90%28sc.chinaz.com%29.mp3?Expires=3231971440&OSSAccessKeyId=LTAI4G9rgor8RbRNVjtsLqxi&Signature=pcqUeIU9AMRFelOpaP%2B4zANc3x0%3D',
-	// 	type: 'sound',
-	// },
+	{
+		key: 'bullets',
+		url: './assets/bullet.mp3',
+		type: 'sound',
+	},
 ]
 RES.resolve(mapJson, (process, sum) => {
 	console.log('进度~', process, sum)
@@ -40,6 +35,7 @@ RES.onLoad(() => {
 	const bulletList = new Set()
 	const enemyList = new Set()
 	const display = createDisplay({ canvas, ctx })
+	// 画背景
 	const bg1 = new CImage({
 		leftTop: {
 			x: 0,
@@ -61,71 +57,20 @@ RES.onLoad(() => {
 	display.add(bg1)
 	display.add(bg2)
 
-	function bgMove() {
-		bg1.y -= 1
-		bg2.y -= 1
-		if (bg1.y < -bg1.height + 1) {
-			bg1.y = bg1.height - 2
-		}
-		if (bg2.y < -bg2.height + 1) {
-			bg2.y = bg2.height - 2
-		}
-	}
-
-	function initEnemy() {
-		const enemy = new CImage({
-			leftTop: {
-				x: Math.floor(Math.random() * (375 - 60 - 0)) + 0,
-				y: 0,
-			},
-			width: 60,
-			height: 60,
-			source: RES.getRes('enemy'),
-		})
-
-		display.add(enemy)
-		enemyList.add(enemy)
-		enemy.track(() => {
-			enemy.y += 2
-			if (enemy.y >= 550) {
-				// console.log('删除敌机')
-				display.remove(enemy)
-				enemyList.delete(enemy)
-			}
-		})
-	}
-
-	let gameOver = false
-
-	function checkHit() {
-		console.log('uuuu')
-
-		// 碰撞检测
-		bulletList.forEach(bullet => {
-			enemyList.forEach(enemy => {
-				console.log(bullet.intersects(enemy), 'sss')
-				if (bullet.intersects(enemy)) {
-					enemyList.delete(enemy)
-					bulletList.delete(bullet)
-					display.remove(enemy)
-					display.remove(bullet)
-					return
-				}
-				if (enemy.intersects(hero)) {
-					gameOverd()
-					// display.release()
-					// enemy.release()
-					// bullet.release()
-					console.log('碰撞了，游戏结束')
-				}
-			})
-		})
-	}
+	// 记录得分
+	let scoreNumber = 0
+	const score = new Text({
+		text: `当前得分：${scoreNumber}`,
+		size: 18,
+		color: '#e67e22',
+		x: 10,
+		y: 30,
+	})
+	display.add(score)
 
 	// 全局事件
 	let enemyTick = 0
 	display.track(() => {
-		console.log('aaasss')
 		bgMove()
 		enemyTick++
 		if (enemyTick === 100) {
@@ -135,29 +80,7 @@ RES.onLoad(() => {
 		checkHit()
 	})
 
-	// setTimeout(() => {
-	// 	display.release()
-	// 	display.remove(hero)
-	// 	enemyList.forEach(enemy => {
-	// 		display.remove(enemy)
-	// 	})
-	// 	bulletList.forEach(bullet => {
-	// 		display.remove(bullet)
-	// 	})
-	// 	// hero.release()
-	// }, 2000)
-
-	function gameOverd(params) {
-		display.release()
-		display.remove(hero)
-		enemyList.forEach(enemy => {
-			display.remove(enemy)
-		})
-		bulletList.forEach(bullet => {
-			display.remove(bullet)
-		})
-	}
-
+	// 创建猪脚
 	const hero = new CImage({
 		leftTop: {
 			x: 375 / 2 - 80 / 2,
@@ -192,7 +115,6 @@ RES.onLoad(() => {
 
 	let num = 0
 	hero.track(() => {
-		console.log('还在运动')
 		num++
 		if (num === 100) {
 			num = 0
@@ -207,16 +129,82 @@ RES.onLoad(() => {
 			})
 			display.add(bullet)
 			bulletList.add(bullet)
-
+			RES.getRes('bullets').play()
 			bullet.track(() => {
-				console.log('QQQQQ')
 				bullet.y -= 5
 				if (bullet.y <= 50) {
-					console.log('删除子弹')
 					display.remove(bullet)
 					bulletList.delete(bullet)
 				}
 			})
 		}
 	})
+
+	// 移动背景
+	function bgMove() {
+		bg1.y -= 1
+		bg2.y -= 1
+		if (bg1.y < -bg1.height + 1) {
+			bg1.y = bg1.height - 2
+		}
+		if (bg2.y < -bg2.height + 1) {
+			bg2.y = bg2.height - 2
+		}
+	}
+
+	// 创建敌机
+	function initEnemy() {
+		const enemy = new CImage({
+			leftTop: {
+				x: Math.floor(Math.random() * (375 - 60 - 0)) + 0,
+				y: 0,
+			},
+			width: 60,
+			height: 60,
+			source: RES.getRes('enemy'),
+		})
+
+		display.add(enemy)
+		enemyList.add(enemy)
+		enemy.track(() => {
+			enemy.y += 2
+			if (enemy.y >= 550) {
+				display.remove(enemy)
+				enemyList.delete(enemy)
+			}
+		})
+	}
+
+	// 碰撞检测
+	function checkHit() {
+		bulletList.forEach(bullet => {
+			enemyList.forEach(enemy => {
+				if (bullet.intersects(enemy)) {
+					scoreNumber += 10
+					score.text = `当前得分：${scoreNumber}`
+					enemyList.delete(enemy)
+					bulletList.delete(bullet)
+					display.remove(enemy)
+					display.remove(bullet)
+					return
+				}
+				if (enemy.intersects(hero)) {
+					gameOver()
+					console.log('碰撞了，游戏结束')
+				}
+			})
+		})
+	}
+
+	// 游戏结束
+	function gameOver() {
+		display.release()
+		display.remove(hero)
+		enemyList.forEach(enemy => {
+			display.remove(enemy)
+		})
+		bulletList.forEach(bullet => {
+			display.remove(bullet)
+		})
+	}
 })

@@ -101,7 +101,6 @@ export class Image extends Shape {
 	}
 
 	intersects(shape: Image) {
-		// console.log('aaaa')
 		return checkHit(this, shape)
 	}
 }

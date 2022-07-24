@@ -1271,7 +1271,6 @@ class Image extends Shape_1.Shape {
         display.redraw();
     }
     intersects(shape) {
-        // console.log('aaaa')
         return (0, index_1.checkHit)(this, shape);
     }
 }
@@ -1473,15 +1472,22 @@ exports.Rect = Rect;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Text = void 0;
 const Shape_1 = __webpack_require__(7);
+const _1 = __webpack_require__(2);
 class Text extends Shape_1.Shape {
     constructor(props) {
         super();
         this.props = props;
-        this.text = props.text;
+        // this.text = props.text
         this.point = {
             x: props.x,
             y: props.y,
         };
+    }
+    get text() {
+        return this.props.text;
+    }
+    set text(text) {
+        this.change({ text }, _1.display);
     }
     draw(ctx) {
         const { x, y, text, type, color = '#000', size = 20 } = this.props;
@@ -1489,11 +1495,11 @@ class Text extends Shape_1.Shape {
         ctx.font = size + 'px serif';
         if (type === 'stroke') {
             ctx.strokeStyle = color;
-            ctx.fillText(text, x, y);
+            ctx.strokeText(text, x, y);
         }
         else {
             ctx.fillStyle = color;
-            ctx.strokeText(text, x, y);
+            ctx.fillText(text, x, y);
         }
         ctx.restore();
     }
@@ -1565,7 +1571,6 @@ let sourceCount = 0;
 const source2map = new Map();
 function getRes(key) {
     if (source2map.has(key)) {
-        // console.log('key', key)
         return source2map.get(key);
     }
     throw new error_1.default(error_1.ErrorType.SOURCE_NOT_FOUND, `${key} resource is not found`);
