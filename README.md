@@ -42,9 +42,134 @@
 
 ## 快速开始
 
-直接在项目根目录的dist文件夹内直接复制`mini_engine.min.js`文件，在`html`中引入即可。
+### 安装
 
-之后会发布至`npm`，敬请期待🤩
+npm install canvas_easy_draw
+
+### 使用
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="referrer" content="no-referrer" />
+		<title>canvas_easy_draw</title>
+		<style>
+			#myCanvas {
+				background-color: #95a5a6;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="mini_engine.min.js"></script>
+		<canvas id="myCanvas" width="500" height="500"></canvas>
+
+		<script>
+			const { RES, createDisplay, Image: CImage, Rect } = mini_engine
+			const canvas = document.getElementById('myCanvas')
+			const ctx = canvas.getContext('2d')
+
+			// 静态资源配置
+			const mapJson = [
+				{
+					key: 'header',
+					url: 'https://vitepress-source.oss-cn-beijing.aliyuncs.com/typoraimage-20220326203849385.png',
+					type: 'image',
+				},
+				{
+					key: 'bg',
+					url: 'https://shiheng-tech.oss-cn-shanghai.aliyuncs.com/shihengtest//1655171440449/%E7%AB%99%E9%95%BF%E7%B4%A0%E6%9D%90%28sc.chinaz.com%29.mp3?Expires=3231971440&OSSAccessKeyId=LTAI4G9rgor8RbRNVjtsLqxi&Signature=pcqUeIU9AMRFelOpaP%2B4zANc3x0%3D',
+					type: 'image',
+				},
+				{
+					key: 'clean',
+					url: 'https://shiheng-tech.oss-cn-shanghai.aliyuncs.com/shihengtest//1655171440449/%E7%AB%99%E9%95%BF%E7%B4%A0%E6%9D%90%28sc.chinaz.com%29.mp3?Expires=3231971440&OSSAccessKeyId=LTAI4G9rgor8RbRNVjtsLqxi&Signature=pcqUeIU9AMRFelOpaP%2B4zANc3x0%3D',
+					type: 'sound',
+				},
+			]
+
+			RES.resolve(mapJson, (process, sum) => {
+				console.log('进度~', process, sum)
+			})
+
+			RES.onLoad(() => {
+				// 创建舞台
+				const display = createDisplay({ canvas, ctx })
+				const cImg = new CImage({
+					leftTop: {
+						x: 200,
+						y: 200,
+					},
+					width: 50,
+					height: 50,
+					source: RES.getRes('header'),
+				})
+				display.add(cImg)
+				setTimeout(() => {
+					cImg.change(
+						{
+							source: RES.getRes('bg'),
+							width: 100,
+							height: 50,
+						},
+						display
+					)
+				}, 500)
+				const rect = new Rect({
+					leftTop: {
+						x: 100,
+						y: 100,
+					},
+					width: 100,
+					height: 100,
+					fillColor: '#3498db',
+				})
+
+				// 缓动动画
+				rect.change(
+					{
+						leftTop: {
+							x: 200,
+							y: 300,
+						},
+						width: 50,
+						height: 50,
+						fillColor: '#3498db',
+					},
+					{
+						duration: 1000,
+						repeat: 2,
+						delay: 500,
+						onComplete: () => {
+							console.log('动画完成了')
+						},
+						onUpdate: () => {
+							console.log('动画进行中')
+						},
+						onRepeat: () => {
+							console.log('动画重新开始了')
+						},
+					}
+				)
+				// 添加元素
+				display.add(rect)
+
+				// 点击事件
+				rect.on('mousedown', () => {
+					console.log('点击了')
+				})
+			})
+
+			// console.log('res', res)
+		</script>
+	</body>
+</html>
+
+```
+
 
 ## 目录结构
 

@@ -10,7 +10,7 @@
     "dev": "webpack-dev-server"
   },
   "keywords": [],
-  "author": "",
+  "author": "JImmylxue",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.15.8",
