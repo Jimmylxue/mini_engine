@@ -1,7 +1,7 @@
 
 <br>
 
-<h1 align="center">Welcome to mini_engine 👋</h1>
+<h1 align="center">Welcome to canvas_easy_draw 👋</h1>
 
 <br>
 
