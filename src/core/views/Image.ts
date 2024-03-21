@@ -1,7 +1,7 @@
 import { Shape } from './Shape'
 import { ImageProps, TShape } from 'types/types'
 import { Display } from './Display'
-import BaseError, { ErrorType, error } from '../error'
+import BaseError, { ErrorType } from '../error'
 import { Tween } from '@tweenjs/tween.js'
 import { checkInRegin } from '@utils/pointCheck'
 import { display } from '.'

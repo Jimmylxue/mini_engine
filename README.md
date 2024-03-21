@@ -197,3 +197,7 @@ npm install canvas_easy_draw
 └── tsconfig.json            # ts相关配置
 ├── webpack.config.js        # webpack配置
 ````
+
+## TodoList
+
+- img组件也需要支持 tween 缓动动画

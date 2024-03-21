@@ -4,11 +4,9 @@ import { TextProps } from 'types/types'
 import { display } from '.'
 
 export class Text extends Shape {
-	// public text: string
 	public point: any
 	constructor(private props: TextProps) {
 		super()
-		// this.text = props.text
 		this.point = {
 			x: props.x,
 			y: props.y,

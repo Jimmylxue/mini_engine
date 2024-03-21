@@ -1,16 +1,25 @@
 import { Rect } from './Rect'
 import { Point2d } from './Point'
-import { EVENT_ARR } from 'types/types'
+import { BASE_EVENT_ARR } from 'types/types'
 
 export class Display {
 	private animateTimer: number = 0
+	private canvas: HTMLElement
+	private ctx: CanvasRenderingContext2D
 	public fnArr?: () => void
+	public _x:number = 0
+	public _y:number = 0
+	public _width:number = 0
+	public _height:number = 0
 	constructor(
-		private canvas: HTMLElement,
-		private ctx: CanvasRenderingContext2D,
+		id:string,
 		private allShapes = new Set<Rect>()
 	) {
-		this.bindEvent()
+		this.canvas = document.getElementById(id)!
+		this.ctx = (this.canvas as HTMLCanvasElement).getContext('2d')!
+		this._width = this.canvas.clientWidth
+		this._height = this.canvas.clientHeight
+		this.bindBaseEvent()
 		this.star()
 	}
 
@@ -40,15 +49,24 @@ export class Display {
 		animate()
 	}
 
-	bindEvent() {
-		EVENT_ARR.forEach(eventName => {
+	/**
+	 * 为 canvas 绑定 基础的事件
+	 */
+	bindBaseEvent() {
+		BASE_EVENT_ARR.forEach(eventName => {
 			this.canvas.addEventListener(eventName, this.handleEvent(eventName))
+
 		})
 	}
 
-	handleEvent(name: string) {
+	/**
+	 * 分发每一个事件：核心是先事件先触达至 canvas 再判断 是否在元素身份上，再做分发
+	 * @param name keyof HTMLElementEventMap
+	 * @returns 
+	 */
+	handleEvent(name: keyof HTMLElementEventMap) {
 		return (event: any) => {
-			event = this.getNewEvent(event)
+			event = this.createNewEvent(event)
 			this.allShapes.forEach((shape: Rect) => {
 				const listeners = shape.listenerMap.get(name)
 				if (
@@ -62,7 +80,12 @@ export class Display {
 		}
 	}
 
-	getNewEvent(event: any) {
+	/**
+	 * 创建一个通用的 点击 事件对象
+	 * @param event 
+	 * @returns 
+	 */
+	createNewEvent(event: any) {
 		const point = new Point2d(event.offsetX, event.offsetY)
 		return {
 			point,
@@ -71,11 +94,17 @@ export class Display {
 		}
 	}
 
+	/**
+	 * 往舞台添加元素
+	 */
 	add(shape: any) {
 		shape.draw(this.ctx)
 		this.allShapes.add(shape)
 	}
 
+	/**
+	 * 舞台清空元素
+	 */
 	remove(shape: any) {
 		this.allShapes.delete(shape)
 		this.clearCanvas()
@@ -83,12 +112,16 @@ export class Display {
 		// shape?.release()
 	}
 
-	// 清除画布
+	/**
+	 * 清除画布
+	 */
 	clearCanvas() {
-		this.ctx.clearRect(0, 0, 375, 667)
+		this.ctx.clearRect(this._x, this._y, this._width, this._height)
 	}
 
-	// 重新绘画
+	/**
+	 * 重新绘画
+	 */
 	redraw() {
 		this.clearCanvas()
 		this.allShapes.forEach(shape => {
@@ -96,14 +129,23 @@ export class Display {
 		})
 	}
 
+	/**
+	 * 绑定事件
+	 */
 	track(fn: () => void) {
 		this.fnArr = fn
 	}
 
+	/**
+	 * 触发事件
+	 */
 	trigger() {
 		this.fnArr?.()
 	}
 
+	/**
+	 * 释放绑定空间
+	 */
 	release() {
 		this.fnArr = () => {}
 	}

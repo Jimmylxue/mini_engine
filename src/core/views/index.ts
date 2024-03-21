@@ -8,15 +8,16 @@ export { Text } from './Text'
 
 export let display: Display
 
+/**
+ * 创建 舞台  传递 canvas 的id
+ */
 export function createDisplay({
-	canvas,
-	ctx,
+	id
 }: {
-	canvas: HTMLElement
-	ctx: CanvasRenderingContext2D
-}) {
+	id?: string
+} = {id : 'snow-engine'}) {
 	if (!display) {
-		display = new Display(canvas, ctx)
+		display = new Display(id!)
 	}
 	return display
 }

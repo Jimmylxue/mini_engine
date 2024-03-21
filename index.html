@@ -7,19 +7,19 @@
 		<meta name="referrer" content="no-referrer" />
 		<title>canvas_easy_draw</title>
 		<style>
-			#myCanvas {
+			#snow-engine {
 				background-color: #95a5a6;
 			}
 		</style>
 	</head>
 	<body>
+		<div id="yesy"></div>
 		<script src="mini_engine.min.js"></script>
-		<canvas id="myCanvas" width="500" height="500"></canvas>
+		<canvas id="snow-engine" width="500" height="500"></canvas>
 
 		<script>
+			const div = document.getElementById('yesy')
 			const { RES, createDisplay, Image: CImage, Rect } = mini_engine
-			const canvas = document.getElementById('myCanvas')
-			const ctx = canvas.getContext('2d')
 
 			// 静态资源配置
 			const mapJson = [
@@ -46,7 +46,7 @@
 
 			RES.onLoad(() => {
 				// 创建舞台
-				const display = createDisplay({ canvas, ctx })
+				const display = createDisplay()
 				const cImg = new CImage({
 					leftTop: {
 						x: 200,
@@ -86,7 +86,7 @@
 						},
 						width: 50,
 						height: 50,
-						fillColor: '#3498db',
+						fillColor: '#e67e22',
 					},
 					{
 						duration: 1000,
@@ -111,6 +111,8 @@
 					console.log('点击了')
 				})
 			})
+
+			
 
 			// console.log('res', res)
 		</script>

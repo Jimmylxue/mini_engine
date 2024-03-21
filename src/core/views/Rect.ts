@@ -1,6 +1,5 @@
-import { RectProps, TShape } from 'types/types'
+import { RectProps, TMouseEvent, TShape } from 'types/types'
 import { Shape } from './Shape'
-import { Display } from './Display'
 import TWEEN, { Tween } from '@tweenjs/tween.js'
 import { Animate } from 'types/AnimateProps'
 import { checkInRegin } from '@utils/pointCheck'
@@ -39,7 +38,6 @@ export class Rect extends Shape {
 	}
 
 	draw(ctx: CanvasRenderingContext2D) {
-		// this.initAnimate()
 		const { leftTop, width, height, fillColor = 'skyblue' } = this.props
 		ctx.save()
 		ctx.beginPath()
@@ -48,8 +46,12 @@ export class Rect extends Shape {
 		ctx.closePath()
 		ctx.restore()
 	}
-	// 判断点击的点是否在图形内部
-	isPointInClosedRegion(mouse: any) {
+	/**
+	 * 判断点击的点是否在图形内部
+	 * @param mouse 
+	 * @returns 
+	 */
+	isPointInClosedRegion(mouse: TMouseEvent) {
 		return checkInRegin(TShape.RECT, mouse, this)
 	}
 
@@ -79,7 +81,7 @@ export class Rect extends Shape {
 			.to(changeProp, duration)
 			.easing(TWEEN.Easing.Linear.None)
 			.onUpdate(
-				(position: { x: number; y: number; width: number; height: number }) => {
+				(position: { x: number; y: number; width: number; height: number,fillColor:string }) => {
 					this.props = {
 						leftTop: {
 							x: position.x,
@@ -87,7 +89,7 @@ export class Rect extends Shape {
 						},
 						width: position.width,
 						height: position.height,
-						fillColor: this.props.fillColor,
+						fillColor: fillColor!,
 					}
 					this.isAnimating = true
 					onUpdate?.()
@@ -107,6 +109,5 @@ export class Rect extends Shape {
 			.delay(delay)
 			.repeatDelay(repeatDelay || 1000)
 			.repeat(repeat)
-		// display.redraw()
 	}
 }

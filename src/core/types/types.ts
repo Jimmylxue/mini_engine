@@ -12,6 +12,8 @@ export type SizeBase = {
 	height: number
 }
 
+export type BaseShapeProps = Point & SizeBase
+
 export type CircleProps = {
 	center: Point
 	radius: number
@@ -39,10 +41,14 @@ export const MOUSE_DOWN = 'mousedown'
 export const MOUSE_UP = 'mouseup'
 export const TOUCH_MOVE = 'touchmove'
 
-export const EVENT_ARR = [MOUSE_MOVE, MOUSE_DOWN, MOUSE_UP, TOUCH_MOVE]
+export const BASE_EVENT_ARR = [MOUSE_MOVE, MOUSE_DOWN, MOUSE_UP, TOUCH_MOVE] as unknown as [keyof HTMLElementEventMap]
 
 export enum TShape {
 	RECT,
 	Image,
 	Circle,
+}
+
+export type TMouseEvent = {
+	point:{x:number,y:number,distance:(center:Point)=>number}
 }

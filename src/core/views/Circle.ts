@@ -19,7 +19,11 @@ export class Circle extends Shape {
 		ctx.restore()
 	}
 
-	// 判断鼠标的点是否在图形内部
+	/**
+	 * 判断鼠标的点是否在图形内部
+	 * @param mouse 
+	 * @returns 
+	 */
 	isPointInClosedRegion(mouse: any) {
 		return checkInRegin(TShape.Circle, mouse, this)
 	}
