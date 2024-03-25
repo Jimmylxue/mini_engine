@@ -13,6 +13,9 @@ export class Display {
 	public _height:number = 0
 	constructor(
 		id:string,
+		/**
+		 * 存放所有的 canvas 画布内的元素
+		 */
 		private allShapes = new Set<Rect>()
 	) {
 		this.canvas = document.getElementById(id)!
@@ -121,12 +124,24 @@ export class Display {
 
 	/**
 	 * 重新绘画
+	 * 每次画面会更新都是 清除 -> 重绘的结果
 	 */
 	redraw() {
+		const showRedraw = this.checkShouldRedraw()
+		if(!showRedraw){
+			return
+		}
 		this.clearCanvas()
 		this.allShapes.forEach(shape => {
 			shape.draw(this.ctx)
 		})
+	}
+
+	/**
+	 * 判断是否需要重绘
+	 */
+	checkShouldRedraw(){
+		return !![...this.allShapes].find(shape=>shape.isAnimating)
 	}
 
 	/**
